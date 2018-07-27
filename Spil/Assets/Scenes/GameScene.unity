@@ -468,11 +468,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRole: 0
-  ActiveTile: {fileID: 0}
   key: {fileID: 999916327}
+  CurrentStand: {fileID: 0}
+  itemPrefab: {fileID: 0}
+  holdingItem: {fileID: 0}
+  CurrentItem: 0
   onTile: 0
   horizontal: p2H
   vertical: p2V
+  action: p2A
 --- !u!1 &1243847346
 GameObject:
   m_ObjectHideFlags: 0
@@ -667,11 +671,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRole: 0
-  ActiveTile: {fileID: 0}
   key: {fileID: 1053596697}
+  CurrentStand: {fileID: 0}
+  itemPrefab: {fileID: 0}
+  holdingItem: {fileID: 0}
+  CurrentItem: 0
   onTile: 0
   horizontal: p1H
   vertical: p1V
+  action: p1A
 --- !u!4 &1679476261 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4245095960898848, guid: 22ea58bd34f9a1948a7f101e8c88de82,
@@ -883,6 +891,11 @@ Prefab:
     - target: {fileID: 1760126439934216, guid: 22ea58bd34f9a1948a7f101e8c88de82, type: 2}
       propertyPath: m_Name
       value: Table
+      objectReference: {fileID: 0}
+    - target: {fileID: 114646859033805232, guid: 22ea58bd34f9a1948a7f101e8c88de82,
+        type: 2}
+      propertyPath: objectOnTable
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22ea58bd34f9a1948a7f101e8c88de82, type: 2}

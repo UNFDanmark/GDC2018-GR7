@@ -19,6 +19,7 @@ public class TableTileCollision : MonoBehaviour {
         {
 
             other.GetComponent<PlayerManager>().onTile = true;
+            other.GetComponent<PlayerManager>().CurrentStand = transform.parent.gameObject;
 
         }
 
@@ -31,6 +32,7 @@ public class TableTileCollision : MonoBehaviour {
         {
 
             other.GetComponent<PlayerManager>().onTile = false;
+            other.GetComponent<PlayerManager>().CurrentStand = null;
 
         }
 
