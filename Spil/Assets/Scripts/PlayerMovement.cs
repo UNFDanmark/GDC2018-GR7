@@ -9,11 +9,11 @@ public class PlayerMovement : MonoBehaviour {
 
     Vector2 dir;
 
-    public string horizontal = "p1H", vertical = "p1V";
+    private PlayerManager player;
 
     private void Start()
     {
-
+        player = GetComponent<PlayerManager>();
         rb = GetComponent<Rigidbody>();
 
     }
@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour {
     private void Update()
     {
 
-        dir = new Vector2(Input.GetAxisRaw(horizontal), Input.GetAxisRaw(vertical));
+        dir = new Vector2(Input.GetAxisRaw(player.horizontal), Input.GetAxisRaw(player.vertical));
 
     }
 
