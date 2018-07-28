@@ -5,6 +5,7 @@ using UnityEngine;
 public class SingleTableManager : MonoBehaviour {
     public GameObject TableTile;
     public GameObject foodPlate;
+    public GameObject dirtyPlate;
     public GameObject currentitem;
     public bool emptyTable = true;
     public PlayerManager.PossibleItems objectOnTable = PlayerManager.PossibleItems.empty;
@@ -55,7 +56,16 @@ public class SingleTableManager : MonoBehaviour {
             emptyTable = false;
 
         }
-        if (objectOnTable == PlayerManager.PossibleItems.empty)
+        else if (objectOnTable == PlayerManager.PossibleItems.dirtyPlate && emptyTable)
+        {
+
+            Vector3 offset = new Vector3(0, 0, 0);
+            offset.y = 1;
+            currentitem = Instantiate(dirtyPlate, transform.position + offset, Quaternion.identity, transform);
+            emptyTable = false;
+
+        }
+        else if (objectOnTable == PlayerManager.PossibleItems.empty)
         {
 
             GameObject.Destroy(currentitem);
