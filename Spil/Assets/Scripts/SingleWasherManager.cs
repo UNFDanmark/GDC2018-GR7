@@ -23,7 +23,6 @@ public class SingleWasherManager : MonoBehaviour
             washerTimer -= Time.deltaTime;
             if (washerTimer <= 0)
             {
-                Debug.Log("Done");
                 washerDone = true;
             }
         }
