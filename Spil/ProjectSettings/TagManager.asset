@@ -8,6 +8,7 @@ TagManager:
   - Stove
   - Table
   - Washer
+  - CuttingBoard
   layers:
   - Default
   - TransparentFX
