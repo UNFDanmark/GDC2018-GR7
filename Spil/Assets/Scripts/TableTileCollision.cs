@@ -7,7 +7,7 @@ public class TableTileCollision : MonoBehaviour {
     public GameObject key;
     public Transform tableParent;
 
-    private void Start()
+    void Start()
     {
         tableParent = transform.parent;
     }

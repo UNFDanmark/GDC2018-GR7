@@ -47,7 +47,6 @@ public class PlayerManager : MonoBehaviour {
     void GrabItem()
     {
 
-        Debug.Log(itemPrefab);
         Vector3 offset = new Vector3(0, 0, 0);
         offset.x = 1;
         holdingItem = Instantiate(itemPrefab, transform.position + offset, Quaternion.Euler(0, 0, 0), transform);
@@ -59,12 +58,9 @@ public class PlayerManager : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
         {
-            Debug.Log(hit.collider.gameObject.tag);
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
 
             if(hit.collider.gameObject.tag == "Tile")
             {
-                Debug.Log("på tile");
                 //Player er på en tile
                 onTile = true;
                 CurrentStand = hit.collider.transform.parent.gameObject;
@@ -72,7 +68,6 @@ public class PlayerManager : MonoBehaviour {
             }
             else
             {
-                Debug.Log("Ikke på tile");
                 //Ikke på en tile
                 onTile = false;
                 CurrentStand = null;
@@ -88,7 +83,7 @@ public class PlayerManager : MonoBehaviour {
         {
             if (CurrentStand.tag == "Table")
             {
-                if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable != PossibleItems.empty)
+                if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable != PossibleItems.empty && CurrentItem == PossibleItems.empty)
                 {
 
                     switch (CurrentStand.GetComponent<SingleTableManager>().objectOnTable)
@@ -113,7 +108,7 @@ public class PlayerManager : MonoBehaviour {
 
                     //Place holded item on table
                     GameObject.Destroy(holdingItem);
-                    CurrentStand.GetComponent<SingleTableManager>().objectOnTable = PossibleItems.foodPlate;
+                    CurrentStand.GetComponent<SingleTableManager>().objectOnTable = CurrentItem;
                     CurrentStand.GetComponent<SingleTableManager>().emptyTable = true;
                     CurrentItem = PossibleItems.empty;
 
