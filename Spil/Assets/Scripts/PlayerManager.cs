@@ -36,39 +36,14 @@ public class PlayerManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Debug.Log(CurrentItem);
-
+        TileChecker();
         key.SetActive(onTile);
         if (onTile)
         {
 
             if (Input.GetButtonDown(action))
             {
-
-                if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable != PossibleItems.empty)
-                {
-
-                    if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable == PossibleItems.foodPlate)
-                    {
-
-                        itemPrefab = Resources.Load<GameObject>("Prefabs/foodPlate");
-
-                    }
-
-                    CurrentItem = CurrentStand.GetComponent<SingleTableManager>().objectOnTable;
-                    CurrentStand.GetComponent<SingleTableManager>().objectOnTable = PossibleItems.empty;
-                    GrabItem();
-
-                } else if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable == PossibleItems.empty && CurrentItem != PossibleItems.empty)
-                {
-
-                    //Place holded item on table
-                    GameObject.Destroy(holdingItem);
-                    CurrentStand.GetComponent<SingleTableManager>().objectOnTable = PossibleItems.foodPlate;
-                    CurrentStand.GetComponent<SingleTableManager>().emptyTable = true;
-
-                }
-
+                Actions();
             }
 
         }
@@ -82,5 +57,65 @@ public class PlayerManager : MonoBehaviour {
         offset.x = 1;
         holdingItem = Instantiate(itemPrefab, transform.position + offset, Quaternion.Euler(0, 0, 0), transform);
 
+    }
+
+    void TileChecker()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+        {
+            Debug.Log(hit.collider.gameObject.tag);
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
+
+            if(hit.collider.gameObject.tag == "Tile")
+            {
+                Debug.Log("på tile");
+                //Player er på en tile
+                onTile = true;
+                CurrentStand = hit.collider.transform.parent.gameObject;
+
+            }
+            else
+            {
+                Debug.Log("Ikke på tile");
+                //Ikke på en tile
+                onTile = false;
+                CurrentStand = null;
+            }
+        }
+
+    }
+
+    public void Actions()
+    {
+        if (onTile)
+        {
+            if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable != PossibleItems.empty)
+            {
+
+                if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable == PossibleItems.foodPlate)
+                {
+
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/foodPlate");
+
+                }
+
+                CurrentItem = CurrentStand.GetComponent<SingleTableManager>().objectOnTable;
+                CurrentStand.GetComponent<SingleTableManager>().objectOnTable = PossibleItems.empty;
+                GrabItem();
+
+            }
+            else if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable == PossibleItems.empty && CurrentItem != PossibleItems.empty)
+            {
+
+                //Place holded item on table
+                GameObject.Destroy(holdingItem);
+                CurrentStand.GetComponent<SingleTableManager>().objectOnTable = PossibleItems.foodPlate;
+                CurrentStand.GetComponent<SingleTableManager>().emptyTable = true;
+                CurrentItem = PossibleItems.empty;
+
+            }
+
+        }
     }
 }

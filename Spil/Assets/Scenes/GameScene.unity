@@ -892,11 +892,6 @@ Prefab:
       propertyPath: m_Name
       value: Table
       objectReference: {fileID: 0}
-    - target: {fileID: 114646859033805232, guid: 22ea58bd34f9a1948a7f101e8c88de82,
-        type: 2}
-      propertyPath: objectOnTable
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22ea58bd34f9a1948a7f101e8c88de82, type: 2}
   m_IsPrefabAsset: 0
