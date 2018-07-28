@@ -21,6 +21,8 @@ public class PlayerManager : MonoBehaviour {
 
     public string horizontal = "p1H", vertical = "p1V", action = "p1A";
 
+    public GameObject UIkey, UIkey2;
+
     public enum Role
     {
        cook,
