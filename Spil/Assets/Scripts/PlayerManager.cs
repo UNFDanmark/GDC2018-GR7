@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour {
     public GameObject holdingItem;
     public PossibleItems CurrentItem = PossibleItems.empty;
     public bool onTile;
+    public bool canMove = true;
 
     public enum PossibleItems
     {
@@ -21,17 +22,13 @@ public class PlayerManager : MonoBehaviour {
 
     public string horizontal = "p1H", vertical = "p1V", action = "p1A";
 
+    public GameObject UIkey, UIkey2;
+
     public enum Role
     {
        cook,
        cleaner
     }
-
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -64,12 +61,9 @@ public class PlayerManager : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
         {
-            Debug.Log(hit.collider.gameObject.tag);
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
 
             if(hit.collider.gameObject.tag == "Tile")
             {
-                Debug.Log("på tile");
                 //Player er på en tile
                 onTile = true;
                 CurrentStand = hit.collider.transform.parent.gameObject;
@@ -77,7 +71,6 @@ public class PlayerManager : MonoBehaviour {
             }
             else
             {
-                Debug.Log("Ikke på tile");
                 //Ikke på en tile
                 onTile = false;
                 CurrentStand = null;
@@ -88,34 +81,101 @@ public class PlayerManager : MonoBehaviour {
 
     public void Actions()
     {
+
         if (onTile)
         {
-            if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable != PossibleItems.empty)
+            if (CurrentStand.tag == "Table")
             {
-
-                if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable == PossibleItems.foodPlate)
+                if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable != PossibleItems.empty && CurrentItem == PossibleItems.empty)
                 {
 
-                    itemPrefab = Resources.Load<GameObject>("Prefabs/foodPlate");
+                    switch (CurrentStand.GetComponent<SingleTableManager>().objectOnTable)
+                    {
+
+                        case PossibleItems.dirtyPlate:
+                            itemPrefab = Resources.Load<GameObject>("Prefabs/dirtyPlate");
+                            break;
+                        case PossibleItems.foodPlate:
+                            itemPrefab = Resources.Load<GameObject>("Prefabs/foodPlate");
+                            break;
+
+                    }
+
+                    CurrentItem = CurrentStand.GetComponent<SingleTableManager>().objectOnTable;
+                    CurrentStand.GetComponent<SingleTableManager>().objectOnTable = PossibleItems.empty;
+                    GrabItem();
 
                 }
+                else if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable == PossibleItems.empty && CurrentItem != PossibleItems.empty)
+                {
 
-                CurrentItem = CurrentStand.GetComponent<SingleTableManager>().objectOnTable;
-                CurrentStand.GetComponent<SingleTableManager>().objectOnTable = PossibleItems.empty;
-                GrabItem();
+                    //Place holded item on table
+                    GameObject.Destroy(holdingItem);
+                    CurrentStand.GetComponent<SingleTableManager>().objectOnTable = CurrentItem;
+                    CurrentStand.GetComponent<SingleTableManager>().emptyTable = true;
+                    CurrentItem = PossibleItems.empty;
 
+                }
             }
-            else if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable == PossibleItems.empty && CurrentItem != PossibleItems.empty)
+            else if (CurrentStand.tag == "Stove")
             {
+                //Gør noget med stove
+                if (CurrentItem == PossibleItems.foodPlate)
+                {
+                    if (CurrentStand.GetComponent<SingleStoveManager>().itemInStove == PossibleItems.empty)
+                    {
+                        
+                        CurrentStand.GetComponent<SingleStoveManager>().itemInStove = PossibleItems.foodPlate;
+                        CurrentItem = PossibleItems.empty;
+                        GameObject.Destroy(holdingItem);
 
-                //Place holded item on table
-                GameObject.Destroy(holdingItem);
-                CurrentStand.GetComponent<SingleTableManager>().objectOnTable = PossibleItems.foodPlate;
-                CurrentStand.GetComponent<SingleTableManager>().emptyTable = true;
-                CurrentItem = PossibleItems.empty;
+                    }
+                }
+                else if (CurrentItem == PossibleItems.empty && CurrentStand.GetComponent<SingleStoveManager>().itemInStove == PossibleItems.foodPlate && CurrentStand.GetComponent<SingleStoveManager>().stoveDone)
+                {
+                    CurrentItem = PossibleItems.foodPlate;
+                    CurrentStand.GetComponent<SingleStoveManager>().itemInStove = PossibleItems.empty;
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/foodPlate");
+                    GrabItem();
+                }
 
             }
+            else if (CurrentStand.tag == "Washer")
+            {
+                //Gør noget med stove
+                if (CurrentItem == PossibleItems.dirtyPlate)
+                {
+                    if (CurrentStand.GetComponent<SingleWasherManager>().itemInWasher == PossibleItems.empty)
+                    {
 
+                        CurrentStand.GetComponent<SingleWasherManager>().itemInWasher = PossibleItems.dirtyPlate;
+                        CurrentItem = PossibleItems.empty;
+                        GameObject.Destroy(holdingItem);
+
+                    }
+                }
+                else if (CurrentItem == PossibleItems.empty && CurrentStand.GetComponent<SingleWasherManager>().itemInWasher == PossibleItems.dirtyPlate && CurrentStand.GetComponent<SingleWasherManager>().washerDone)
+                {
+                    CurrentItem = PossibleItems.dirtyPlate;
+                    CurrentStand.GetComponent<SingleWasherManager>().itemInWasher = PossibleItems.empty;
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/dirtyPlate");
+                    GrabItem();
+                }
+
+            }
+            else if (CurrentStand.tag == "CuttingBoard")
+            {
+               if (CurrentItem == PossibleItems.foodPlate)
+                {
+                    canMove = false;
+                    KeyManager.TriggerQuickEvent(this, 20, QuickEventOver);
+                }
+            }
         }
+    }
+
+    public void QuickEventOver()
+    {
+        canMove = true;
     }
 }
