@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 9af695d482f3afa4290851be09156dd7
+=======
+guid: da76d069893de2541bc113c52695e2b3
+>>>>>>> 91c1908b4fd7e0d1ec144d2a4fd0eb827ab5553b
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -14,7 +18,11 @@ ModelImporter:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+<<<<<<< HEAD
     materialLocation: 0
+=======
+    materialLocation: 1
+>>>>>>> 91c1908b4fd7e0d1ec144d2a4fd0eb827ab5553b
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
