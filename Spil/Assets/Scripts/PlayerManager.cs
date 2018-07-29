@@ -12,6 +12,8 @@ public class PlayerManager : MonoBehaviour {
     public PossibleItems CurrentItem = PossibleItems.empty;
     public bool onTile;
     public bool canMove = true;
+    public bool quickEventActive = false;
+    public Transform itemPlacement;
 
     public enum PossibleItems
     {
@@ -49,11 +51,7 @@ public class PlayerManager : MonoBehaviour {
 
     void GrabItem()
     {
-
-        Vector3 offset = new Vector3(0, 0, 0);
-        offset.x = 1;
-        holdingItem = Instantiate(itemPrefab, transform.position + offset, Quaternion.Euler(0, 0, 0), transform);
-
+        holdingItem = Instantiate(itemPrefab, itemPlacement.position, Quaternion.identity, transform);
     }
 
     void TileChecker()
@@ -167,8 +165,12 @@ public class PlayerManager : MonoBehaviour {
             {
                if (CurrentItem == PossibleItems.foodPlate)
                 {
-                    canMove = false;
-                    KeyManager.TriggerQuickEvent(this, 20, QuickEventOver);
+                    if (!quickEventActive)
+                    {
+                        canMove = false;
+                        quickEventActive = true;
+                        KeyManager.TriggerQuickEvent(this, 30, QuickEventOver);
+                    }
                 }
             }
         }
@@ -177,5 +179,6 @@ public class PlayerManager : MonoBehaviour {
     public void QuickEventOver()
     {
         canMove = true;
+        quickEventActive = false;
     }
 }
