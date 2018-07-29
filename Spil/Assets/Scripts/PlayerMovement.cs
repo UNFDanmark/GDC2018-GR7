@@ -20,8 +20,10 @@ public class PlayerMovement : MonoBehaviour {
 
     private void Update()
     {
-
-        dir = new Vector2(Input.GetAxisRaw(player.horizontal), Input.GetAxisRaw(player.vertical));
+        if (player.canMove)
+            dir = new Vector2(Input.GetAxisRaw(player.horizontal), Input.GetAxisRaw(player.vertical));
+        else
+            dir = Vector2.zero;
 
     }
 

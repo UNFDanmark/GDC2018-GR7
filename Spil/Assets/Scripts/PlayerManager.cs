@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour {
     public GameObject holdingItem;
     public PossibleItems CurrentItem = PossibleItems.empty;
     public bool onTile;
+    public bool canMove = true;
 
     public enum PossibleItems
     {
@@ -162,6 +163,19 @@ public class PlayerManager : MonoBehaviour {
                 }
 
             }
+            else if (CurrentStand.tag == "CuttingBoard")
+            {
+               if (CurrentItem == PossibleItems.foodPlate)
+                {
+                    canMove = false;
+                    KeyManager.TriggerQuickEvent(this, 20, QuickEventOver);
+                }
+            }
         }
+    }
+
+    public void QuickEventOver()
+    {
+        canMove = true;
     }
 }
