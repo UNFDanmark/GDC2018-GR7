@@ -9,6 +9,7 @@ public class GameHandler : MonoBehaviour {
     public GameObject foodPlate;
     public GameObject dirtyPlate;
     public Item emptyItem = new Item(PossibleItems.empty, ItemState.none);
+    public int potTableFoodNeeded = 3;
 
     public enum ItemState
     {
@@ -27,7 +28,8 @@ public class GameHandler : MonoBehaviour {
     {
         empty,
         dirtyPlate,
-        foodPlate
+        foodPlate,
+        finished
     };
 
     public class Item

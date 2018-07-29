@@ -23,6 +23,7 @@ public class SingleWasherManager : MonoBehaviour
             washerTimer -= Time.deltaTime;
             if (washerTimer <= 0)
             {
+                itemInWasher.itemState = GameHandler.ItemState.clean;
                 washerDone = true;
             }
         }

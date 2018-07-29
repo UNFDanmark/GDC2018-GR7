@@ -22,10 +22,12 @@ public class SingleStoveManager : MonoBehaviour {
             if (stoveTimer <= 0)
             {
                 // Done
+                itemInStove.itemState = GameHandler.ItemState.done;
                 stoveDone = true;
                 if (stoveTimer <= -5)
                 {
                     // Burned
+                    itemInStove.itemState = GameHandler.ItemState.burned;
                 }
             }
         }

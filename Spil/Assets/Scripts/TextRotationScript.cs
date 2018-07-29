@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TextRotationScript : MonoBehaviour {
 
-    void Update()
+    void Awake()
     {
         transform.LookAt(Camera.main.transform);
     }

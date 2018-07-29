@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour {
     public GameObject CurrentStand;
     public GameObject itemPrefab;
     public GameObject holdingItem;
+    public GameObject gameHandlerObject;
     public GameHandler.Item CurrentItem;
     public bool onTile;
     public bool canMove = true;
@@ -36,6 +37,8 @@ public class PlayerManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
+        Debug.Log("Current item state: " + CurrentItem.itemState);
+
         TileChecker();
         key.SetActive(onTile);
         if (onTile)
@@ -47,7 +50,6 @@ public class PlayerManager : MonoBehaviour {
             }
 
         }
-        Debug.Log("Current item er " + CurrentItem.possibleItems);
 
 	}
 
@@ -86,7 +88,6 @@ public class PlayerManager : MonoBehaviour {
         {
             if (CurrentStand.tag == "Table")
             {
-                Debug.Log((CurrentStand.GetComponent<SingleTableManager>().objectOnTable.possibleItems == GameHandler.PossibleItems.empty) + " " + CurrentItem.possibleItems);
                 if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable.possibleItems != GameHandler.PossibleItems.empty && CurrentItem.possibleItems == GameHandler.PossibleItems.empty)
                 {
 
@@ -104,12 +105,10 @@ public class PlayerManager : MonoBehaviour {
                     CurrentItem = CurrentStand.GetComponent<SingleTableManager>().objectOnTable;
                     CurrentStand.GetComponent<SingleTableManager>().objectOnTable = emptyItem;
                     GrabItem();
-                    Debug.Log("Tog item fra bord: " + CurrentItem.possibleItems);
 
                 }
                 else if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable.possibleItems == GameHandler.PossibleItems.empty && CurrentItem.possibleItems != GameHandler.PossibleItems.empty)
                 {
-                    Debug.Log("Her");
                     //Place holded item on table
                     GameObject.Destroy(holdingItem);
                     CurrentStand.GetComponent<SingleTableManager>().objectOnTable = CurrentItem;
@@ -176,13 +175,43 @@ public class PlayerManager : MonoBehaviour {
             }
             else if (CurrentStand.tag == "CuttingBoard")
             {
-               if (CurrentItem.possibleItems == GameHandler.PossibleItems.foodPlate)
+               if (CurrentItem.possibleItems == GameHandler.PossibleItems.foodPlate && playerRole == Role.cook)
                 {
                     if (!quickEventActive)
                     {
                         canMove = false;
                         quickEventActive = true;
                         KeyManager.TriggerQuickEvent(this, 30, QuickEventOver);
+                    }
+                }
+            }
+            else if (CurrentStand.tag == "Sink")
+            {
+                if (CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate && playerRole == Role.cleaner)
+                {
+                    if (!quickEventActive)
+                    {
+                        canMove = false;
+                        quickEventActive = true;
+                        KeyManager.TriggerQuickEvent(this, 30, QuickEventOver);
+                    }
+                }
+            }
+            else if (CurrentStand.tag == "PotTable")
+            {
+                if (CurrentItem.possibleItems == GameHandler.PossibleItems.foodPlate && CurrentItem.itemState == GameHandler.ItemState.done && playerRole == Role.cook)
+                {
+                    GameObject.Destroy(holdingItem);
+                    gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded--;
+                    CurrentItem = emptyItem;
+
+                    if(gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded == 0)
+                    {
+                        //Der er 3 ting i gryden, og den skal nu kunne samles op.
+                        itemPrefab = Resources.Load<GameObject>("Prefabs/Pot");
+                        CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finished, GameHandler.ItemState.none);
+                        GrabItem();
+
                     }
                 }
             }
@@ -195,7 +224,7 @@ public class PlayerManager : MonoBehaviour {
         quickEventActive = false;
 
         // Rimeligt hardcoded. Ændrer dette hvis at vi bruger quicktime til andre ting end at washe og cutte
-        //if (CurrentItem.possibleItems)
+        CurrentItem.itemState = GameHandler.ItemState.prept;
 
     }
 }

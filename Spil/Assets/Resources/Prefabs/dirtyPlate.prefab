@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33451435349287736}
   - component: {fileID: 23996901763681556}
   - component: {fileID: 136591282211628034}
-  - component: {fileID: 114199080253202882}
   m_Layer: 0
   m_Name: dirtyPlate
   m_TagString: Untagged
@@ -85,19 +84,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1550286325286774}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114199080253202882
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1550286325286774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03c8f82602cafc94ba370066ef2400ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemType: 1
-  itemState: 4
 --- !u!136 &136591282211628034
 CapsuleCollider:
   m_ObjectHideFlags: 1
