@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SingleWasherManager : MonoBehaviour
 {
-    public PlayerManager.PossibleItems itemInWasher = PlayerManager.PossibleItems.empty;
+    public GameHandler.Item itemInWasher = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
     public float washerTimer = 5f; // Washer skal tage længere tid en stove
     public bool washerDone = false;
     public TextMesh timerText;
@@ -18,7 +18,7 @@ public class SingleWasherManager : MonoBehaviour
     void Update()
     {
 
-        if (itemInWasher != PlayerManager.PossibleItems.empty)
+        if (itemInWasher.possibleItems != GameHandler.PossibleItems.empty)
         {
             washerTimer -= Time.deltaTime;
             if (washerTimer <= 0)
@@ -32,7 +32,7 @@ public class SingleWasherManager : MonoBehaviour
             washerDone = false;
         }
 
-        if (washerTimer > 0 && itemInWasher != PlayerManager.PossibleItems.empty)
+        if (washerTimer > 0 && itemInWasher.possibleItems != GameHandler.PossibleItems.empty)
         {
             timerText.text = Mathf.RoundToInt(washerTimer).ToString();
         }
@@ -42,7 +42,7 @@ public class SingleWasherManager : MonoBehaviour
             timerText.text = "Done";
 
         }
-        else if (itemInWasher == PlayerManager.PossibleItems.empty)
+        else if (itemInWasher.possibleItems == GameHandler.PossibleItems.empty)
         {
             timerText.text = "Empty";
         }

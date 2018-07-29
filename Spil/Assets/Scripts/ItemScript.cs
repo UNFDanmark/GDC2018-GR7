@@ -4,7 +4,4 @@ using UnityEngine;
 
 public class ItemScript : MonoBehaviour {
 
-    public PlayerManager.PossibleItems itemType;
-    public GameHandler.itemState itemState;
-
 }

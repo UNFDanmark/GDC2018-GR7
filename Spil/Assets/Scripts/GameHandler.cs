@@ -8,7 +8,9 @@ public class GameHandler : MonoBehaviour {
     public int dirtyPlateAmount;
     public GameObject foodPlate;
     public GameObject dirtyPlate;
-    public enum itemState
+    public Item emptyItem = new Item(PossibleItems.empty, ItemState.none);
+
+    public enum ItemState
     {
 
         raw,
@@ -16,8 +18,28 @@ public class GameHandler : MonoBehaviour {
         done,
         burned,
         dirty,
-        clean
+        clean,
+        none
 
     };
+
+    public enum PossibleItems
+    {
+        empty,
+        dirtyPlate,
+        foodPlate
+    };
+
+    public class Item
+    {
+        public PossibleItems possibleItems;
+        public ItemState itemState;
+
+        public Item(PossibleItems itemType, ItemState stateOfItem)
+        {
+            possibleItems = itemType;
+            itemState = stateOfItem;
+        }
+    }
 
 }

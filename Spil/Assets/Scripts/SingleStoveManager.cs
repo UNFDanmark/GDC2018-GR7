@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SingleStoveManager : MonoBehaviour {
-    public PlayerManager.PossibleItems itemInStove = PlayerManager.PossibleItems.empty;
+    public GameHandler.Item itemInStove = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
     public float stoveTimer = 5f;
     public bool stoveDone = false;
     public TextMesh timerText;
-    public GameObject itemObject;
 
     void Start()
     {
@@ -17,7 +16,7 @@ public class SingleStoveManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        if (itemInStove != PlayerManager.PossibleItems.empty)
+        if (itemInStove.possibleItems != GameHandler.PossibleItems.empty)
         {
             stoveTimer -= Time.deltaTime;
             if (stoveTimer <= 0)
@@ -36,7 +35,7 @@ public class SingleStoveManager : MonoBehaviour {
             stoveDone = false;
         }
         
-        if (stoveTimer > 0 && itemInStove != PlayerManager.PossibleItems.empty)
+        if (stoveTimer > 0 && itemInStove.possibleItems != GameHandler.PossibleItems.empty)
         {
             timerText.text = Mathf.RoundToInt(stoveTimer).ToString();
         }
@@ -46,7 +45,7 @@ public class SingleStoveManager : MonoBehaviour {
             timerText.text = "Done";
 
         }
-        else if (itemInStove == PlayerManager.PossibleItems.empty)
+        else if (itemInStove.possibleItems == GameHandler.PossibleItems.empty)
         {
             timerText.text = "Empty";
         }
