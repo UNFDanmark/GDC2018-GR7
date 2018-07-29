@@ -11,7 +11,7 @@ using TMPro;
 /// Julius 'Bukz' Bendt
 /// Juto Studio
 /// https://wwww.juto.dk
-/// Free license
+/// Free-for-all license
 ///
 /// </summary>
 
@@ -103,14 +103,14 @@ public class KeyManager : MonoBehaviour {
     {
         if(!string.IsNullOrEmpty(p1Key1))
         {
-            if (Input.GetKey(p1Key1) && !p1key1turn && p1Amount > 0) //button left/2. grow button 1
+            if (Input.GetKeyDown(p1Key1) && !p1key1turn && p1Amount > 0)
             {
                 ui.KeyPressed(p1l,p1r);
                 p1Amount--;
                 p1key1turn = true;
             }
 
-            if (Input.GetKey(p1Key2) && p1key1turn && p1Amount > 0)
+            if (Input.GetKeyDown(p1Key2) && p1key1turn && p1Amount > 0)
             {
                 ui.KeyPressed(p1r, p1l);
                 p1Amount--;
@@ -120,14 +120,14 @@ public class KeyManager : MonoBehaviour {
 
         if (!string.IsNullOrEmpty(p2Key1))
         {
-            if (Input.GetKey(p2Key1) && !p2key1turn && p2Amount > 0)
+            if (Input.GetKeyDown(p2Key1) && !p2key1turn && p2Amount > 0)
             {
                 ui.KeyPressed(p2l, p2r);
                 p2Amount--;
                 p2key1turn = true;
             }
 
-            if (Input.GetKey(p2Key2) && p2key1turn && p2Amount > 0)
+            if (Input.GetKeyDown(p2Key2) && p2key1turn && p2Amount > 0)
             {
                 ui.KeyPressed(p2r, p2l);
                 p2Amount--;

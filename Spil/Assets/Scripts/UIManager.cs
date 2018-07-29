@@ -1,6 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+/// <CREDIT>
+/// Julius 'Bukz' Bendt
+/// Juto Studio
+/// https://wwww.juto.dk
+/// Free-for-all license
+/// </CREDIT>
 
 public class UIManager : MonoBehaviour {
 
