@@ -37,8 +37,6 @@ public class PlayerMovement : MonoBehaviour {
 
     private void RotatePlayer()
     {
-        Debug.Log("Horizontal axis: " + Input.GetAxisRaw(player.horizontal) + " Vertical axis: " + Input.GetAxisRaw(player.vertical));
-
         float HorizontalAxis = Input.GetAxisRaw(player.horizontal);
         float VerticalAxis = Input.GetAxisRaw(player.vertical);
         

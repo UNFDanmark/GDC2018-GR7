@@ -9,6 +9,8 @@ TagManager:
   - Table
   - Washer
   - CuttingBoard
+  - Sink
+  - PotTable
   layers:
   - Default
   - TransparentFX

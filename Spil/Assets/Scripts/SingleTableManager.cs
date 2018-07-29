@@ -8,7 +8,7 @@ public class SingleTableManager : MonoBehaviour {
     public GameObject dirtyPlate;
     public GameObject currentitem;
     public bool emptyTable = true;
-    public PlayerManager.PossibleItems objectOnTable = PlayerManager.PossibleItems.empty;
+    public GameHandler.Item objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
     
 
 
@@ -47,7 +47,7 @@ public class SingleTableManager : MonoBehaviour {
     void SpawnItem()
     {
 
-        if (objectOnTable == PlayerManager.PossibleItems.foodPlate && emptyTable)
+        if (objectOnTable.possibleItems == GameHandler.PossibleItems.foodPlate && emptyTable)
         {
 
             Vector3 offset = new Vector3(0, 0, 0);
@@ -56,7 +56,7 @@ public class SingleTableManager : MonoBehaviour {
             emptyTable = false;
 
         }
-        else if (objectOnTable == PlayerManager.PossibleItems.dirtyPlate && emptyTable)
+        else if (objectOnTable.possibleItems == GameHandler.PossibleItems.dirtyPlate && emptyTable)
         {
 
             Vector3 offset = new Vector3(0, 0, 0);
@@ -65,7 +65,7 @@ public class SingleTableManager : MonoBehaviour {
             emptyTable = false;
 
         }
-        else if (objectOnTable == PlayerManager.PossibleItems.empty)
+        else if (objectOnTable.possibleItems == GameHandler.PossibleItems.empty)
         {
 
             GameObject.Destroy(currentitem);
