@@ -16,12 +16,14 @@ public class PlayerManager : MonoBehaviour {
     public bool quickEventActive = false;
     public Transform itemPlacement;
     public GameHandler.Item emptyItem = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
-
-
+    public GameObject pot;
+    public GameObject currentOrder;
 
     public string horizontal = "p1H", vertical = "p1V", action = "p1A";
 
     public GameObject UIkey, UIkey2;
+
+    TableItemSpawner tableItemSpawner;
 
     public enum Role
     {
@@ -37,10 +39,13 @@ public class PlayerManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        Debug.Log("Current item state: " + CurrentItem.itemState);
+        if (currentOrder == null)
+        {
+            currentOrder = GameObject.FindGameObjectWithTag("Order");
+        }
 
-        TileChecker();
         key.SetActive(onTile);
+        TileChecker();
         if (onTile)
         {
 
@@ -60,6 +65,7 @@ public class PlayerManager : MonoBehaviour {
 
     void TileChecker()
     {
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
         {
@@ -205,14 +211,34 @@ public class PlayerManager : MonoBehaviour {
                     gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded--;
                     CurrentItem = emptyItem;
 
-                    if(gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded == 0)
-                    {
-                        //Der er 3 ting i gryden, og den skal nu kunne samles op.
-                        itemPrefab = Resources.Load<GameObject>("Prefabs/Pot");
+                    //if(gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded == 0)
+                    //{
+                    //Der er 3 ting i gryden, og den skal nu kunne samles op.
+                    pot.SetActive(false);
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/Pot");
                         CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finished, GameHandler.ItemState.none);
                         GrabItem();
+                    //}
+                }
+            }
+            else if (CurrentStand.tag == "CookFinish")
+            {
+                if (CurrentItem.possibleItems == GameHandler.PossibleItems.finished && playerRole == Role.cook)
+                {
+                    GameObject.Destroy(holdingItem);
+                    pot.SetActive(true);
+                    CurrentItem = emptyItem;
+                    GameObject.Destroy(currentOrder);
+                    gameHandlerObject.GetComponent<GameHandler>().dirtyPlateAmount += 1;
 
-                    }
+                }
+            }
+            else if (CurrentStand.tag == "WasherFinish")
+            {
+                if (CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate && CurrentItem.itemState == GameHandler.ItemState.clean && playerRole == Role.cleaner)
+                {
+                    GameObject.Destroy(holdingItem);
+                    CurrentItem = emptyItem;
                 }
             }
         }

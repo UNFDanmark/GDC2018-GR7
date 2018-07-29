@@ -11,6 +11,10 @@ TagManager:
   - CuttingBoard
   - Sink
   - PotTable
+  - Pot
+  - CookFinish
+  - WasherFinish
+  - Order
   layers:
   - Default
   - TransparentFX

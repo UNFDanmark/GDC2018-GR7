@@ -26,7 +26,7 @@ public class TableItemSpawner : MonoBehaviour {
         SpawnFoodPlate();
     }
 
-    void SpawnDirtyPlates()
+    public void SpawnDirtyPlates()
     {
         int dirtyPlateCount = GameManager.GetComponent<GameHandler>().dirtyPlateAmount;
         if (spawnedDirtyPlates < dirtyPlateCount)

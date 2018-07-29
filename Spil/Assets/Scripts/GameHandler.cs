@@ -43,5 +43,4 @@ public class GameHandler : MonoBehaviour {
             itemState = stateOfItem;
         }
     }
-
 }
