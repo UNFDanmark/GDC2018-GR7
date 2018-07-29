@@ -7,6 +7,7 @@ public class SingleStoveManager : MonoBehaviour {
     public float stoveTimer = 5f;
     public bool stoveDone = false;
     public TextMesh timerText;
+    public GameObject itemObject;
 
     void Start()
     {
