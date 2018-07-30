@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour {
     public bool canMove = true;
     public bool quickEventActive = false;
     public Transform itemPlacement;
-    public GameHandler.Item emptyItem = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
+    public GameHandler.Item emptyItem = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
     public GameObject pot;
     public GameObject currentOrder;
 
@@ -32,7 +32,7 @@ public class PlayerManager : MonoBehaviour {
 
     private void Awake()
     {
-        CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
+        CurrentItem = emptyItem;
     }
 
     // Update is called once per frame
@@ -60,6 +60,7 @@ public class PlayerManager : MonoBehaviour {
     void GrabItem()
     {
         holdingItem = Instantiate(itemPrefab, itemPlacement.position, Quaternion.identity, transform);
+        Debug.Log("itemPrefab: " + itemPrefab);
     }
 
     void TileChecker()
@@ -95,19 +96,10 @@ public class PlayerManager : MonoBehaviour {
             {
                 if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable.possibleItems != GameHandler.PossibleItems.empty && CurrentItem.possibleItems == GameHandler.PossibleItems.empty)
                 {
-
-                    switch (CurrentStand.GetComponent<SingleTableManager>().objectOnTable.possibleItems)
-                    {
-
-                        case GameHandler.PossibleItems.dirtyPlate:
-                            itemPrefab = Resources.Load<GameObject>("Prefabs/dirtyPlate");
-                            break;
-                        case GameHandler.PossibleItems.foodPlate:
-                            itemPrefab = Resources.Load<GameObject>("Prefabs/foodPlate");
-                            break;
-
-                    }
                     CurrentItem = CurrentStand.GetComponent<SingleTableManager>().objectOnTable;
+
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
+
                     CurrentStand.GetComponent<SingleTableManager>().objectOnTable = emptyItem;
                     GrabItem();
 
@@ -145,7 +137,7 @@ public class PlayerManager : MonoBehaviour {
                     CurrentStand.GetComponent<SingleStoveManager>().itemInStove = emptyItem;
 
                     //Grafisk del
-                    itemPrefab = Resources.Load<GameObject>("Prefabs/foodPlate");
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
                     GrabItem();
                 }
 
@@ -155,10 +147,10 @@ public class PlayerManager : MonoBehaviour {
                 //Gør noget med washer
                 if (CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate)
                 {
-                    if (CurrentStand.GetComponent<SingleWasherManager>().itemInWasher.possibleItems == GameHandler.PossibleItems.empty && CurrentItem.itemState == GameHandler.ItemState.prept)
+                    if (CurrentStand.GetComponent<SingleWasherManager>().amountOfPlates <= 3 && CurrentItem.itemState == GameHandler.ItemState.prept && CurrentStand.GetComponent<SingleWasherManager>().washerEmptyMode == false)
                     {
-
                         CurrentStand.GetComponent<SingleWasherManager>().itemInWasher = CurrentItem;
+                        CurrentStand.GetComponent<SingleWasherManager>().amountOfPlates++;
                         CurrentItem = emptyItem;
 
                         //Kun grafisk ændring
@@ -166,15 +158,28 @@ public class PlayerManager : MonoBehaviour {
 
                     }
                 }
-                else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty && CurrentStand.GetComponent<SingleWasherManager>().itemInWasher.possibleItems == GameHandler.PossibleItems.dirtyPlate && CurrentStand.GetComponent<SingleWasherManager>().washerDone)
+                else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty || CurrentItem.possibleItems == GameHandler.PossibleItems.finishedDirtyPlate)
                 {
-                    //Tager item fra stove
-                    CurrentItem = CurrentStand.GetComponent<SingleWasherManager>().itemInWasher;
-                    CurrentStand.GetComponent<SingleWasherManager>().itemInWasher = emptyItem;
+                    //Start maskinen
+                    if(CurrentStand.GetComponent<SingleWasherManager>().washerEmptyMode == false)
+                    {
+                        if (CurrentStand.GetComponent<SingleWasherManager>().itemInWasher.possibleItems != GameHandler.PossibleItems.empty)
+                        {
+                            CurrentStand.GetComponent<SingleWasherManager>().StartWasher();
+                        }
+                    }
 
-                    //Grafisk del
-                    itemPrefab = Resources.Load<GameObject>("Prefabs/dirtyPlate");
-                    GrabItem();
+                    //Tag tallerken fra maskine
+                    if(CurrentStand.GetComponent<SingleWasherManager>().washerEmptyMode)
+                    {
+                        CurrentStand.GetComponent<SingleWasherManager>().amountOfPlates--;
+                        AddCleanPlateToStack();
+
+                        if (CurrentStand.GetComponent<SingleWasherManager>().amountOfPlates <= 0)
+                        {
+                            CurrentStand.GetComponent<SingleWasherManager>().itemInWasher = emptyItem;
+                        }
+                    }
                 }
 
             }
@@ -209,13 +214,15 @@ public class PlayerManager : MonoBehaviour {
                     GameObject.Destroy(holdingItem);
                     gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded--;
                     CurrentItem = emptyItem;
+                    KeyManager.TriggerQuickEvent(this, 20, StewEventOver);
+                    canMove = false;
 
                     if(gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded == 0)
                     {
                     // Der er 3 ting i gryden, og den skal nu kunne samles op.
                     pot.SetActive(false);
-                    itemPrefab = Resources.Load<GameObject>("Prefabs/Pot");
-                        CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finished, GameHandler.ItemState.none);
+                        CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finished, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.Pot);
+                        itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
                         GrabItem();
                     }
                 }
@@ -226,10 +233,13 @@ public class PlayerManager : MonoBehaviour {
                 {
                     GameObject.Destroy(holdingItem);
                     pot.SetActive(true);
-                    itemPrefab = Resources.Load<GameObject>("Prefabs/dirtyPlate");
-                    CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.dirtyPlate, GameHandler.ItemState.dirty);
+                    CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.dirtyPlate, GameHandler.ItemState.dirty, GameHandler.ItemPrefabDir.dirtyPlate);
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
                     GameObject.Destroy(currentOrder);
                     gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter++;
+                    TableItemSpawner.spawnedFoodPlates = 0;
+                    gameHandlerObject.GetComponent<GameHandler>().foodPlateSpawnAmount++;
+                    tableItemSpawner.GetComponent<TableItemSpawner>().SpawnFoodPlate();
 
                     GrabItem();
                     gameHandlerObject.GetComponent<GameHandler>().RemoveOrder();
@@ -238,11 +248,30 @@ public class PlayerManager : MonoBehaviour {
             }
             else if (CurrentStand.tag == "WasherFinish")
             {
-                if (CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate && CurrentItem.itemState == GameHandler.ItemState.clean && playerRole == Role.cleaner)
+                if (CurrentItem.possibleItems == GameHandler.PossibleItems.finishedDirtyPlate && playerRole == Role.cleaner)
                 {
-                    GameObject.Destroy(holdingItem);
-                    CurrentItem = emptyItem;
-                    gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter--;
+                    if(CurrentItem.itemState == GameHandler.ItemState.finishedDirtyPlate1)
+                    {
+                        GameObject.Destroy(holdingItem);
+                        CurrentItem = emptyItem;
+                        gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter -= 1;
+                    }
+
+                    if (CurrentItem.itemState == GameHandler.ItemState.finishedDirtyPlate2)
+                    {
+                        GameObject.Destroy(holdingItem);
+                        CurrentItem = emptyItem;
+                        gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter -= 2;
+                        Debug.Log("Plate2Slettet");
+                    }
+
+                    if (CurrentItem.itemState == GameHandler.ItemState.finishedDirtyPlate3)
+                    {
+                        GameObject.Destroy(holdingItem);
+                        CurrentItem = emptyItem;
+                        gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter -= 3;
+                    }
+
                 }
             }
             else if (CurrentStand.tag == "GarbageBin")
@@ -266,5 +295,41 @@ public class PlayerManager : MonoBehaviour {
         // Rimeligt hardcoded. Ændrer dette hvis at vi bruger quicktime til andre ting end at washe og cutte
         CurrentItem.itemState = GameHandler.ItemState.prept;
 
+    }
+
+    public void StewEventOver()
+    {
+        canMove = true;
+        quickEventActive = false;
+    }
+
+    public void AddCleanPlateToStack()
+    {
+        if (CurrentItem.possibleItems != GameHandler.PossibleItems.finishedDirtyPlate)
+        {
+            CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finishedDirtyPlate, GameHandler.ItemState.finishedDirtyPlate1, GameHandler.ItemPrefabDir.dirtyPlate);
+            //Grafisk del
+            itemPrefab = Resources.Load<GameObject>("Prefabs/finishedDirtyPlate1");
+            GrabItem();
+        }
+        else
+        {
+            switch (CurrentItem.itemState)
+            {
+
+                case GameHandler.ItemState.finishedDirtyPlate1:
+                    CurrentItem.itemState = GameHandler.ItemState.finishedDirtyPlate2;
+                    GameObject.Destroy(holdingItem);
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/finishedDirtyPlate2");
+                    GrabItem();
+                    break;
+                case GameHandler.ItemState.finishedDirtyPlate2:
+                    CurrentItem.itemState = GameHandler.ItemState.finishedDirtyPlate3;
+                    GameObject.Destroy(holdingItem);
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/finishedDirtyPlate3");
+                    GrabItem();
+                    break;
+            }
+        }
     }
 }

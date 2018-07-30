@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SingleStoveManager : MonoBehaviour {
-    public GameHandler.Item itemInStove = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
+    public GameHandler.Item itemInStove = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
     public float stoveTimer = 5f;
     public float burnedTimer = 5f;
     public bool stoveDone = false;
@@ -37,6 +37,7 @@ public class SingleStoveManager : MonoBehaviour {
         else
         {
             stoveTimer = 5f;
+            burnedTimer = 5f;
             stoveDone = false;
         }
 
