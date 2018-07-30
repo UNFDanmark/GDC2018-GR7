@@ -34,7 +34,7 @@ public class TableItemSpawner : MonoBehaviour {
             int randomTable = Random.Range(0, tables.Length);
             if (tables[randomTable].GetComponent<SingleTableManager>().objectOnTable.possibleItems == GameHandler.PossibleItems.empty)
             {
-                tables[randomTable].GetComponent<SingleTableManager>().objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.dirtyPlate, GameHandler.ItemState.dirty);
+                tables[randomTable].GetComponent<SingleTableManager>().objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.dirtyPlate, GameHandler.ItemState.dirty, GameHandler.ItemPrefabDir.dirtyPlate);
                 spawnedDirtyPlates++;
                 GameManager.GetComponent<GameHandler>().dirtyPlateCounter++;
             }
@@ -49,7 +49,7 @@ public class TableItemSpawner : MonoBehaviour {
             int randomTable = Random.Range(0, tables.Length);
             if (tables[randomTable].GetComponent<SingleTableManager>().objectOnTable.possibleItems == GameHandler.PossibleItems.empty)
             {
-                tables[randomTable].GetComponent<SingleTableManager>().objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.foodPlate, GameHandler.ItemState.raw);
+                tables[randomTable].GetComponent<SingleTableManager>().objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.foodPlate, GameHandler.ItemState.raw, GameHandler.ItemPrefabDir.foodPlate);
                 spawnedFoodPlates++;
             }
         }
