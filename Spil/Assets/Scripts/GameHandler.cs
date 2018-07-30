@@ -50,6 +50,7 @@ public class GameHandler : MonoBehaviour {
         foodPlate,
         dirtyPlate,
         Pot
+        // Add other food prefabs
 
     }
 
