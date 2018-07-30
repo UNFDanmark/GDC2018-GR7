@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour {
     public GameObject itemPrefab;
     public GameObject holdingItem;
     public GameObject gameHandlerObject;
+    public GameObject tableItemSpawner;
     public GameHandler.Item CurrentItem;
     public bool onTile;
     public bool canMove = true;
@@ -22,8 +23,6 @@ public class PlayerManager : MonoBehaviour {
     public string horizontal = "p1H", vertical = "p1V", action = "p1A";
 
     public GameObject UIkey, UIkey2;
-
-    TableItemSpawner tableItemSpawner;
 
     public enum Role
     {
@@ -211,14 +210,14 @@ public class PlayerManager : MonoBehaviour {
                     gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded--;
                     CurrentItem = emptyItem;
 
-                    //if(gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded == 0)
-                    //{
-                    //Der er 3 ting i gryden, og den skal nu kunne samles op.
+                    if(gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded == 0)
+                    {
+                    // Der er 3 ting i gryden, og den skal nu kunne samles op.
                     pot.SetActive(false);
                     itemPrefab = Resources.Load<GameObject>("Prefabs/Pot");
                         CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finished, GameHandler.ItemState.none);
                         GrabItem();
-                    //}
+                    }
                 }
             }
             else if (CurrentStand.tag == "CookFinish")
@@ -227,9 +226,13 @@ public class PlayerManager : MonoBehaviour {
                 {
                     GameObject.Destroy(holdingItem);
                     pot.SetActive(true);
-                    CurrentItem = emptyItem;
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/dirtyPlate");
+                    CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.dirtyPlate, GameHandler.ItemState.dirty);
                     GameObject.Destroy(currentOrder);
-                    gameHandlerObject.GetComponent<GameHandler>().dirtyPlateAmount += 1;
+                    gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter++;
+
+                    GrabItem();
+                    gameHandlerObject.GetComponent<GameHandler>().RemoveOrder();
 
                 }
             }
@@ -239,6 +242,17 @@ public class PlayerManager : MonoBehaviour {
                 {
                     GameObject.Destroy(holdingItem);
                     CurrentItem = emptyItem;
+                    gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter--;
+                }
+            }
+            else if (CurrentStand.tag == "GarbageBin")
+            {
+                if (CurrentItem.itemState == GameHandler.ItemState.burned)
+                {
+                    CurrentItem = emptyItem;
+                    GameObject.Destroy(holdingItem);
+                    TableItemSpawner.spawnedFoodPlates--;
+                    tableItemSpawner.GetComponent<TableItemSpawner>().SpawnFoodPlate();
                 }
             }
         }

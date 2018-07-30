@@ -5,6 +5,7 @@ using UnityEngine;
 public class SingleStoveManager : MonoBehaviour {
     public GameHandler.Item itemInStove = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
     public float stoveTimer = 5f;
+    public float burnedTimer = 5f;
     public bool stoveDone = false;
     public TextMesh timerText;
 
@@ -15,6 +16,8 @@ public class SingleStoveManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+        int burnedTimerInt = Mathf.RoundToInt(burnedTimer);
 
         if (itemInStove.possibleItems != GameHandler.PossibleItems.empty)
         {
@@ -36,16 +39,24 @@ public class SingleStoveManager : MonoBehaviour {
             stoveTimer = 5f;
             stoveDone = false;
         }
-        
+
         if (stoveTimer > 0 && itemInStove.possibleItems != GameHandler.PossibleItems.empty)
         {
             timerText.text = Mathf.RoundToInt(stoveTimer).ToString();
         }
-        else if (stoveTimer < 0)
+        else if (stoveTimer < 0 && stoveTimer > -5 && itemInStove.itemState != GameHandler.ItemState.burned)
         {
-
-            timerText.text = "Done";
-
+            itemInStove.itemState = GameHandler.ItemState.done;
+            burnedTimer -= Time.deltaTime;
+        }
+        if (burnedTimer < 0)
+        {
+            timerText.text = "Burned";
+            itemInStove.itemState = GameHandler.ItemState.burned;
+        }
+        if (itemInStove.itemState == GameHandler.ItemState.done)
+        {
+            timerText.text = "Done\nTime until burned: " + burnedTimerInt;
         }
         else if (itemInStove.possibleItems == GameHandler.PossibleItems.empty)
         {
