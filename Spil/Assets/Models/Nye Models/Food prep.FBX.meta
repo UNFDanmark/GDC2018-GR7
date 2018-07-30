@@ -1,14 +1,31 @@
 fileFormatVersion: 2
-guid: 67e3ae509dcd9434aae6c6970d1f87f7
+guid: 6ba476e1d99ec99418c575923a276e67
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
+    100000: desk
+    100002: //RootNode
+    100004: light
+    100006: pole
+    100008: pole002
+    400000: desk
+    400002: //RootNode
+    400004: light
+    400006: pole
+    400008: pole002
     2100000: No Name
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Cylinder001
+    2300000: desk
+    2300002: light
+    2300004: pole
+    2300006: pole002
+    3300000: desk
+    3300002: light
+    3300004: pole
+    3300006: pole002
+    4300000: desk
+    4300002: pole
+    4300004: pole002
+    4300006: light
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -40,7 +57,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 10
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1

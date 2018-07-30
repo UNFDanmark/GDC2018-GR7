@@ -60,7 +60,6 @@ public class PlayerManager : MonoBehaviour {
     void GrabItem()
     {
         holdingItem = Instantiate(itemPrefab, itemPlacement.position, Quaternion.identity, transform);
-        Debug.Log("itemPrefab: " + itemPrefab);
     }
 
     void TileChecker()
@@ -262,7 +261,6 @@ public class PlayerManager : MonoBehaviour {
                         GameObject.Destroy(holdingItem);
                         CurrentItem = emptyItem;
                         gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter -= 2;
-                        Debug.Log("Plate2Slettet");
                     }
 
                     if (CurrentItem.itemState == GameHandler.ItemState.finishedDirtyPlate3)

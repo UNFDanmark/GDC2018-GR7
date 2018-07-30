@@ -21,7 +21,6 @@ public class SingleWasherManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(washerEmptyMode);
         if (amountOfPlates >= 3 && washerStarted == false)
         {
             StartWasher();
@@ -55,7 +54,6 @@ public class SingleWasherManager : MonoBehaviour
         }
         else if (washerEmptyMode)
         {
-            Debug.Log("Amount of plates: " + amountOfPlates);
             timerText.text = "Done.  " + amountOfPlates.ToString() + " left in the washer";
         }
         else if (itemInWasher.possibleItems == GameHandler.PossibleItems.empty && !washerEmptyMode)
