@@ -5,7 +5,7 @@ using UnityEngine;
 public class SingleWasherManager : MonoBehaviour
 {
     public GameHandler.Item itemInWasher = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
-    public float washerTimer = 5f; // Washer skal tage længere tid en stove
+    public float washerTimer = 6f; // Washer skal tage længere tid en stove
     public bool washerDone = false;
     public TextMesh timerText;
 
@@ -29,7 +29,7 @@ public class SingleWasherManager : MonoBehaviour
         }
         else
         {
-            washerTimer = 5f;
+            washerTimer = 6f;
             washerDone = false;
         }
 

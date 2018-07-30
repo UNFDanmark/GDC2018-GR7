@@ -10,14 +10,15 @@ public class PlayerManager : MonoBehaviour {
     public GameObject itemPrefab;
     public GameObject holdingItem;
     public GameObject gameHandlerObject;
+    public GameObject tableItemSpawner;
     public GameHandler.Item CurrentItem;
     public bool onTile;
     public bool canMove = true;
     public bool quickEventActive = false;
     public Transform itemPlacement;
     public GameHandler.Item emptyItem = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
-
-
+    public GameObject pot;
+    public GameObject currentOrder;
 
     public string horizontal = "p1H", vertical = "p1V", action = "p1A";
 
@@ -37,10 +38,13 @@ public class PlayerManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        Debug.Log("Current item state: " + CurrentItem.itemState);
+        if (currentOrder == null)
+        {
+            currentOrder = GameObject.FindGameObjectWithTag("Order");
+        }
 
-        TileChecker();
         key.SetActive(onTile);
+        TileChecker();
         if (onTile)
         {
 
@@ -60,6 +64,7 @@ public class PlayerManager : MonoBehaviour {
 
     void TileChecker()
     {
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
         {
@@ -207,12 +212,47 @@ public class PlayerManager : MonoBehaviour {
 
                     if(gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded == 0)
                     {
-                        //Der er 3 ting i gryden, og den skal nu kunne samles op.
-                        itemPrefab = Resources.Load<GameObject>("Prefabs/Pot");
+                    // Der er 3 ting i gryden, og den skal nu kunne samles op.
+                    pot.SetActive(false);
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/Pot");
                         CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finished, GameHandler.ItemState.none);
                         GrabItem();
-
                     }
+                }
+            }
+            else if (CurrentStand.tag == "CookFinish")
+            {
+                if (CurrentItem.possibleItems == GameHandler.PossibleItems.finished && playerRole == Role.cook)
+                {
+                    GameObject.Destroy(holdingItem);
+                    pot.SetActive(true);
+                    itemPrefab = Resources.Load<GameObject>("Prefabs/dirtyPlate");
+                    CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.dirtyPlate, GameHandler.ItemState.dirty);
+                    GameObject.Destroy(currentOrder);
+                    gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter++;
+
+                    GrabItem();
+                    gameHandlerObject.GetComponent<GameHandler>().RemoveOrder();
+
+                }
+            }
+            else if (CurrentStand.tag == "WasherFinish")
+            {
+                if (CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate && CurrentItem.itemState == GameHandler.ItemState.clean && playerRole == Role.cleaner)
+                {
+                    GameObject.Destroy(holdingItem);
+                    CurrentItem = emptyItem;
+                    gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter--;
+                }
+            }
+            else if (CurrentStand.tag == "GarbageBin")
+            {
+                if (CurrentItem.itemState == GameHandler.ItemState.burned)
+                {
+                    CurrentItem = emptyItem;
+                    GameObject.Destroy(holdingItem);
+                    TableItemSpawner.spawnedFoodPlates--;
+                    tableItemSpawner.GetComponent<TableItemSpawner>().SpawnFoodPlate();
                 }
             }
         }

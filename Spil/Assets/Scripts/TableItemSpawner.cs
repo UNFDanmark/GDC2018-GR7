@@ -6,8 +6,8 @@ public class TableItemSpawner : MonoBehaviour {
 
     public GameObject[] tables;
     public GameObject GameManager;
-    public int spawnedDirtyPlates = 0;
-    public int spawnedFoodPlates = 0;
+    public static int spawnedDirtyPlates = 0;
+    public static int spawnedFoodPlates = 0;
 
     // Use this for initialization
     void Start () {
@@ -26,9 +26,9 @@ public class TableItemSpawner : MonoBehaviour {
         SpawnFoodPlate();
     }
 
-    void SpawnDirtyPlates()
+    public void SpawnDirtyPlates()
     {
-        int dirtyPlateCount = GameManager.GetComponent<GameHandler>().dirtyPlateAmount;
+        int dirtyPlateCount = GameManager.GetComponent<GameHandler>().dirtyPlateSpawnAmount;
         if (spawnedDirtyPlates < dirtyPlateCount)
         {
             int randomTable = Random.Range(0, tables.Length);
@@ -36,13 +36,14 @@ public class TableItemSpawner : MonoBehaviour {
             {
                 tables[randomTable].GetComponent<SingleTableManager>().objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.dirtyPlate, GameHandler.ItemState.dirty);
                 spawnedDirtyPlates++;
+                GameManager.GetComponent<GameHandler>().dirtyPlateCounter++;
             }
         }
     }
 
-    void SpawnFoodPlate()
+    public void SpawnFoodPlate()
     {
-        int foodPlateCount = GameManager.GetComponent<GameHandler>().foodPlateAmount;
+        int foodPlateCount = GameManager.GetComponent<GameHandler>().foodPlateSpawnAmount;
         if (spawnedFoodPlates < foodPlateCount)
         {
             int randomTable = Random.Range(0, tables.Length);
