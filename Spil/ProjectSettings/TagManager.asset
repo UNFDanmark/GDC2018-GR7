@@ -15,6 +15,8 @@ TagManager:
   - CookFinish
   - WasherFinish
   - Order
+  - WinText
+  - GarbageBin
   layers:
   - Default
   - TransparentFX
