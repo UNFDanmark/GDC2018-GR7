@@ -51,7 +51,7 @@ public class SingleTableManager : MonoBehaviour {
         {
 
             Vector3 offset = new Vector3(0, 0, 0);
-            offset.y = 1;
+            offset.y = 0.6f;
             GameObject itemPrefab = Resources.Load<GameObject>("Prefabs/" + objectOnTable.prefabDir.ToString());
             currentitem = Instantiate(itemPrefab, transform.position + offset, Quaternion.identity, transform);
             emptyTable = false;
@@ -61,7 +61,7 @@ public class SingleTableManager : MonoBehaviour {
         {
 
             Vector3 offset = new Vector3(0, 0, 0);
-            offset.y = 1;
+            offset.y = 0.6f;
             GameObject itemPrefab = Resources.Load<GameObject>("Prefabs/" + objectOnTable.prefabDir.ToString());
             currentitem = Instantiate(itemPrefab, transform.position + offset, Quaternion.identity, transform);
             emptyTable = false;

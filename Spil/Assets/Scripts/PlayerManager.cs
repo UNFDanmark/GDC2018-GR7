@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour {
 
     public Role playerRole = Role.cook;
-    public GameObject key;
     public GameObject CurrentStand;
     public GameObject itemPrefab;
     public GameObject holdingItem;
     public GameObject gameHandlerObject;
     public GameObject tableItemSpawner;
+    public GameObject audioDatabase;
     public GameHandler.Item CurrentItem;
     public bool onTile;
     public bool canMove = true;
@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour {
     public GameHandler.Item emptyItem = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
     public GameObject pot;
     public GameObject currentOrder;
+    public bool playingSound = false;
 
     public string horizontal = "p1H", vertical = "p1V", action = "p1A";
 
@@ -38,8 +39,6 @@ public class PlayerManager : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-    
-        key.SetActive(onTile);
 
         if (currentOrder == null)
         {
@@ -61,6 +60,7 @@ public class PlayerManager : MonoBehaviour {
 
     void GrabItem()
     {
+        AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().pickupSound, 0.1f, 1, true, false);
         holdingItem = Instantiate(itemPrefab, itemPlacement.position, Quaternion.identity, transform);
     }
 
@@ -107,6 +107,14 @@ public class PlayerManager : MonoBehaviour {
                 else if (CurrentStand.GetComponent<SingleTableManager>().objectOnTable.possibleItems == GameHandler.PossibleItems.empty && CurrentItem.possibleItems != GameHandler.PossibleItems.empty)
                 {
                     //Place holded item on table
+                    if (CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate)
+                    {
+                        AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().plateDown, 0.1f, 1, true, false);
+                    }
+                    else if (CurrentItem.possibleItems == GameHandler.PossibleItems.foodPlate)
+                    {
+                        AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().foodDown, 0.1f, 1, true, false);
+                    }
                     GameObject.Destroy(holdingItem);
                     CurrentStand.GetComponent<SingleTableManager>().objectOnTable = CurrentItem;
                     CurrentStand.GetComponent<SingleTableManager>().emptyTable = true;
@@ -124,6 +132,7 @@ public class PlayerManager : MonoBehaviour {
                         
                         CurrentStand.GetComponent<SingleStoveManager>().itemInStove = CurrentItem;
                         CurrentItem = emptyItem;
+                        CurrentStand.GetComponent<SingleStoveManager>().stovePaused = false;
 
                         //Kun grafisk ændring
                         GameObject.Destroy(holdingItem);
@@ -132,7 +141,6 @@ public class PlayerManager : MonoBehaviour {
                 }
                 else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty && CurrentStand.GetComponent<SingleStoveManager>().stoveDone == false)
                 {
-                    Debug.Log(CurrentStand.GetComponent<SingleStoveManager>().stovePaused);
 
                     switch (CurrentStand.GetComponent<SingleStoveManager>().stovePaused)
                     {
@@ -180,7 +188,6 @@ public class PlayerManager : MonoBehaviour {
                         if (CurrentStand.GetComponent<SingleWasherManager>().itemInWasher.possibleItems != GameHandler.PossibleItems.empty)
                         {
                             CurrentStand.GetComponent<SingleWasherManager>().StartWasher();
-                            Debug.Log(CurrentStand.GetComponent<SingleWasherManager>().washerPaused);
 
                             switch (CurrentStand.GetComponent<SingleWasherManager>().washerPaused)
                             {
@@ -218,6 +225,7 @@ public class PlayerManager : MonoBehaviour {
                         canMove = false;
                         quickEventActive = true;
                         KeyManager.TriggerQuickEvent(this, 30, QuickEventOver);
+                        AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().cuttingSound, 0.1f, 1, true, true);
                     }
                 }
             }
@@ -230,6 +238,7 @@ public class PlayerManager : MonoBehaviour {
                         canMove = false;
                         quickEventActive = true;
                         KeyManager.TriggerQuickEvent(this, 30, QuickEventOver);
+                        AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().handWash, 0.2f, 1, true, true);
                     }
                 }
             }
@@ -240,6 +249,7 @@ public class PlayerManager : MonoBehaviour {
                     GameObject.Destroy(holdingItem);
                     gameHandlerObject.GetComponent<GameHandler>().potTableFoodNeeded--;
                     CurrentItem = emptyItem;
+                    AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().stewSound, 0.2f, 1, true, true);
                     KeyManager.TriggerQuickEvent(this, 20, StewEventOver);
                     canMove = false;
 
@@ -275,7 +285,8 @@ public class PlayerManager : MonoBehaviour {
             {
                 if (CurrentItem.possibleItems == GameHandler.PossibleItems.finishedDirtyPlate && playerRole == Role.cleaner)
                 {
-                    if(CurrentItem.itemState == GameHandler.ItemState.finishedDirtyPlate1)
+
+                    if (CurrentItem.itemState == GameHandler.ItemState.finishedDirtyPlate1)
                     {
                         GameObject.Destroy(holdingItem);
                         CurrentItem = emptyItem;
@@ -318,17 +329,20 @@ public class PlayerManager : MonoBehaviour {
 
         if(CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate)
         {
+            GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().handWash.name));
             CurrentItem.prefabDir = GameHandler.ItemPrefabDir.lessDirtyPlate;
             GameObject.Destroy(holdingItem);
             itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
             GrabItem();
         }
+        GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().cuttingSound.name));
         CurrentItem.itemState = GameHandler.ItemState.prept;
 
     }
 
     public void StewEventOver()
     {
+        GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().stewSound.name));
         canMove = true;
         quickEventActive = false;
     }

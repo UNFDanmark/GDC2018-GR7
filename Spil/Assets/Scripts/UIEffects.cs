@@ -35,7 +35,7 @@ public class UIEffects : MonoBehaviour {
         yield return null;
     }
 
-    public IEnumerator TextFade(TextMeshProUGUI text,Color color, float time)
+    public IEnumerator TextFade(TextMeshProUGUI text,Color color, float time,OnEventOver onFinish = null)
     {
         float timer = 0.0f;
 
@@ -47,6 +47,9 @@ public class UIEffects : MonoBehaviour {
             text.color = Color.Lerp(org, color, (timer / time));
             yield return null;
         }
+
+        if (onFinish != null)
+            onFinish.Invoke();
     }
 
     public IEnumerator ImageFade(Image image, Color color, float time,OnEventOver onFinish = null)

@@ -27,21 +27,19 @@ public class SingleStoveManager : MonoBehaviour {
         {
             if (stovePaused == false)
             {
-                /*if (!playingSound)
+                if (!playingSound)
                 {
                     AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().stoveSound, true, true);
                     playingSound = true;
-                }*/
+                }
                 stoveTimer -= Time.deltaTime;
             }
             if (stoveTimer <= 0)
             {
-                GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().washerSound.name));
-                playingSound = false;
                 // Done
                 itemInStove.itemState = GameHandler.ItemState.done;
                 stoveDone = true;
-                if (stoveTimer <= -5)
+                if (stoveTimer <= -10)
                 {
                     // Burned
                     itemInStove.itemState = GameHandler.ItemState.burned;
@@ -50,6 +48,8 @@ public class SingleStoveManager : MonoBehaviour {
         }
         else
         {
+            GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().stoveSound.name));
+            playingSound = false;
             stoveTimer = 15f;
             burnedTimer = 10f;
             stoveDone = false;
@@ -60,7 +60,7 @@ public class SingleStoveManager : MonoBehaviour {
         {
             timerText.text = Mathf.RoundToInt(stoveTimer).ToString();
         }
-        else if (stoveTimer < 0 && stoveTimer > -5 && itemInStove.itemState != GameHandler.ItemState.burned)
+        else if (stoveTimer < 0 && stoveTimer > -10 && itemInStove.itemState != GameHandler.ItemState.burned)
         {
             itemInStove.itemState = GameHandler.ItemState.done;
             burnedTimer -= Time.deltaTime;
