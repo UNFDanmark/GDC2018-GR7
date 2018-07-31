@@ -55,6 +55,7 @@ public class GameHandler : MonoBehaviour {
         Broccoli,
         Carrot,
         dirtyPlate,
+        lessDirtyPlate,
         Pot
         // Add other food prefabs
 

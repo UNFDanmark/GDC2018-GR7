@@ -290,7 +290,14 @@ public class PlayerManager : MonoBehaviour {
         canMove = true;
         quickEventActive = false;
 
-        // Rimeligt hardcoded. Ændrer dette hvis at vi bruger quicktime til andre ting end at washe og cutte
+        if(CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate)
+        {
+            Debug.Log("her");
+            CurrentItem.prefabDir = GameHandler.ItemPrefabDir.lessDirtyPlate;
+            GameObject.Destroy(holdingItem);
+            itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
+            GrabItem();
+        }
         CurrentItem.itemState = GameHandler.ItemState.prept;
 
     }
