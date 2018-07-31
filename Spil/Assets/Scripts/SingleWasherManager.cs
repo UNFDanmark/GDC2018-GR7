@@ -7,7 +7,7 @@ public class SingleWasherManager : MonoBehaviour
     public GameHandler.Item itemInWasher = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
     public int amountOfPlates;
     public int setWasherTime;
-    private float washerTimer = 5f;
+    private float washerTimer = 20f;
     public bool washerStarted = false;
     public bool washerDone = false;
     public bool washerEmptyMode = false;
@@ -62,7 +62,7 @@ public class SingleWasherManager : MonoBehaviour
         }
         else if (washerTimer > 0 && itemInWasher.possibleItems != GameHandler.PossibleItems.empty && !washerEmptyMode)
         {
-            timerText.text = "Ready to start washer";
+            timerText.text = "Press to start";
         }
 
     }

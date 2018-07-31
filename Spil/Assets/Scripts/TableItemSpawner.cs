@@ -9,8 +9,12 @@ public class TableItemSpawner : MonoBehaviour {
     public static int spawnedDirtyPlates = 0;
     public static int spawnedFoodPlates = 0;
 
+    public GameHandler.ItemPrefabDir[] foodItemDirs;
+
     // Use this for initialization
     void Start () {
+
+        foodItemDirs = new GameHandler.ItemPrefabDir[] { GameHandler.ItemPrefabDir.Broccoli, GameHandler.ItemPrefabDir.Carrot, GameHandler.ItemPrefabDir.Beef, GameHandler.ItemPrefabDir.Salami};
 
         tables = new GameObject[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
@@ -49,7 +53,8 @@ public class TableItemSpawner : MonoBehaviour {
             int randomTable = Random.Range(0, tables.Length);
             if (tables[randomTable].GetComponent<SingleTableManager>().objectOnTable.possibleItems == GameHandler.PossibleItems.empty)
             {
-                tables[randomTable].GetComponent<SingleTableManager>().objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.foodPlate, GameHandler.ItemState.raw, GameHandler.ItemPrefabDir.foodPlate);
+                int foodplateModel = Random.Range(0, foodItemDirs.Length);
+                tables[randomTable].GetComponent<SingleTableManager>().objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.foodPlate, GameHandler.ItemState.raw, foodItemDirs[foodplateModel]);
                 spawnedFoodPlates++;
             }
         }

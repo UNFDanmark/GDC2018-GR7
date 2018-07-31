@@ -36,14 +36,16 @@ public class PlayerManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
+    
+        key.SetActive(onTile);
 
         if (currentOrder == null)
         {
             currentOrder = GameObject.FindGameObjectWithTag("Order");
         }
-
-        key.SetActive(onTile);
+        
         TileChecker();
         if (onTile)
         {
@@ -74,7 +76,6 @@ public class PlayerManager : MonoBehaviour {
                 //Player er på en tile
                 onTile = true;
                 CurrentStand = hit.collider.transform.parent.gameObject;
-
             }
             else
             {
@@ -237,7 +238,6 @@ public class PlayerManager : MonoBehaviour {
                     GameObject.Destroy(currentOrder);
                     gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter++;
                     TableItemSpawner.spawnedFoodPlates = 0;
-                    gameHandlerObject.GetComponent<GameHandler>().foodPlateSpawnAmount++;
                     tableItemSpawner.GetComponent<TableItemSpawner>().SpawnFoodPlate();
 
                     GrabItem();

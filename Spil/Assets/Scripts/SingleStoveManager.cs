@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class SingleStoveManager : MonoBehaviour {
     public GameHandler.Item itemInStove = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
-    public float stoveTimer = 5f;
-    public float burnedTimer = 5f;
+    public float stoveTimer = 15f;
+    public float burnedTimer = 10f;
     public bool stoveDone = false;
     public TextMesh timerText;
+    public bool paused = false;
 
     void Start()
     {
@@ -21,7 +22,10 @@ public class SingleStoveManager : MonoBehaviour {
 
         if (itemInStove.possibleItems != GameHandler.PossibleItems.empty)
         {
-            stoveTimer -= Time.deltaTime;
+            if (paused == false)
+            {
+                stoveTimer -= Time.deltaTime;
+            }
             if (stoveTimer <= 0)
             {
                 // Done
@@ -36,8 +40,8 @@ public class SingleStoveManager : MonoBehaviour {
         }
         else
         {
-            stoveTimer = 5f;
-            burnedTimer = 5f;
+            stoveTimer = 15f;
+            burnedTimer = 10f;
             stoveDone = false;
         }
 
