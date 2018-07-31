@@ -212,13 +212,14 @@ RectTransform:
   - {fileID: 1036430944}
   - {fileID: 1980427245}
   - {fileID: 609041053}
+  - {fileID: 731991789}
   m_Father: {fileID: 400347913}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -19.5, y: -22}
-  m_SizeDelta: {x: 594.5, y: 516.6}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &96602008
 GameObject:
@@ -297,7 +298,7 @@ MonoBehaviour:
   m_material: {fileID: 0}
   m_sharedMaterial: {fileID: 0}
   m_isDefaultMaterial: 0
-  m_padding: 0.5
+  m_padding: 0
   m_canvasRenderer: {fileID: 115681750}
   m_TextComponent: {fileID: 745655325}
   m_materialReferenceIndex: 1
@@ -510,13 +511,25 @@ MonoBehaviour:
   player2: {fileID: 1980427247}
   button: {fileID: 745655325}
   info:
-  - player1Desc: Player 1 can check his status at this end of the screen!
-    player2Desc: Player 2 can check his status at this end of the screen!
+  - player1Desc: 'To move your character, use WASD, and SPACE to interract with the
+      world. '
+    player2Desc: 'To move your character, use the arrow keys, and LEFT CTRL to interract
+      with the world. '
     time: 15
-  - player1Desc: Move with WASD, and use SPACE to pick up items, and to use them!
-    player2Desc: Move with ARROW KEYS, and use LEFT CTRL to pick up items, and to
-      use them!
-    time: 20
+  - player1Desc: 'Cooks job:   Take an ingredient from the table, and put prepare
+      it at the prep table '
+    player2Desc: 'Washers job: Take a dirty plate to the sink to scrub it'
+    time: 15
+  - player1Desc: 'Take the prepped ingredient and put it in the oven. Then take the
+      baked ingredient and put it in the pot. '
+    player2Desc: Take the scrubbed plate to the dishwasher.
+    time: 15
+  - player1Desc: ' Once the previous steps have been completed 3 times, grab the pot
+      and take it to the delivery station'
+    player2Desc: Dish washer can fit 3 plates, however if you so choose, it can be
+      started with less plates using the interract key. Once the dishwasher is finished
+      take the clean plates to the delivery station
+    time: 0
   effects: {fileID: 282041139}
 --- !u!1 &282223273
 GameObject:
@@ -872,7 +885,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 26.7}
+  m_AnchoredPosition: {x: 0, y: 48}
   m_SizeDelta: {x: 338.5, y: 53.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &609041054
@@ -961,6 +974,75 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 609041052}
   m_CullTransparentMesh: 0
+--- !u!1 &694636124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 694636125}
+  - component: {fileID: 694636127}
+  - component: {fileID: 694636126}
+  m_Layer: 0
+  m_Name: line (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &694636125
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 694636124}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 731991789}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.0000042915344, y: 165.76}
+  m_SizeDelta: {x: 1024, y: 2}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &694636126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 694636124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &694636127
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 694636124}
+  m_CullTransparentMesh: 0
 --- !u!1 &717083462
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,7 +1075,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -25}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &717083464
@@ -1116,6 +1198,76 @@ CanvasRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 717083462}
+  m_CullTransparentMesh: 0
+--- !u!1 &731991788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 731991789}
+  - component: {fileID: 731991791}
+  - component: {fileID: 731991790}
+  m_Layer: 0
+  m_Name: line
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &731991789
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 731991788}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 694636125}
+  m_Father: {fileID: 96068685}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.48683885, y: 31.60001}
+  m_SizeDelta: {x: 2, y: 333.1}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &731991790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 731991788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &731991791
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 731991788}
   m_CullTransparentMesh: 0
 --- !u!1 &739620216
 GameObject:
@@ -1615,8 +1767,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 223.7, y: 118.9}
-  m_SizeDelta: {x: 447.4, y: 137.2}
+  m_AnchoredPosition: {x: 260, y: 5.7002}
+  m_SizeDelta: {x: 500, y: 384.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1036430945
 CanvasRenderer:
@@ -1679,7 +1831,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 257
+  m_textAlignment: 258
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3017,10 +3169,10 @@ RectTransform:
   m_Father: {fileID: 96068685}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -223.70001, y: 145.9}
-  m_SizeDelta: {x: 447.4, y: 138.5}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -260, y: 5.7002}
+  m_SizeDelta: {x: 500, y: 384.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1980427246
 CanvasRenderer:
@@ -3083,7 +3235,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_textAlignment: 260
+  m_textAlignment: 258
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
