@@ -180,7 +180,7 @@ public class PlayerManager : MonoBehaviour {
 
                     }
                 }
-                else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty || CurrentItem.possibleItems == GameHandler.PossibleItems.finishedDirtyPlate)
+                else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty || CurrentItem.possibleItems == GameHandler.PossibleItems.finishedDirtyPlate && playerRole == Role.cleaner)
                 {
                     //Start maskinen
                     if(CurrentStand.GetComponent<SingleWasherManager>().washerEmptyMode == false)
@@ -351,7 +351,7 @@ public class PlayerManager : MonoBehaviour {
     {
         if (CurrentItem.possibleItems != GameHandler.PossibleItems.finishedDirtyPlate)
         {
-            CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finishedDirtyPlate, GameHandler.ItemState.finishedDirtyPlate1, GameHandler.ItemPrefabDir.dirtyPlate);
+            CurrentItem = new GameHandler.Item(GameHandler.PossibleItems.finishedDirtyPlate, GameHandler.ItemState.finishedDirtyPlate1, GameHandler.ItemPrefabDir.finishedDirtyPlate1);
             //Grafisk del
             itemPrefab = Resources.Load<GameObject>("Prefabs/finishedDirtyPlate1");
             GrabItem();
@@ -363,12 +363,14 @@ public class PlayerManager : MonoBehaviour {
 
                 case GameHandler.ItemState.finishedDirtyPlate1:
                     CurrentItem.itemState = GameHandler.ItemState.finishedDirtyPlate2;
+                    CurrentItem.prefabDir = GameHandler.ItemPrefabDir.finishedDirtyPlate2;
                     GameObject.Destroy(holdingItem);
                     itemPrefab = Resources.Load<GameObject>("Prefabs/finishedDirtyPlate2");
                     GrabItem();
                     break;
                 case GameHandler.ItemState.finishedDirtyPlate2:
                     CurrentItem.itemState = GameHandler.ItemState.finishedDirtyPlate3;
+                    CurrentItem.prefabDir = GameHandler.ItemPrefabDir.finishedDirtyPlate3;
                     GameObject.Destroy(holdingItem);
                     itemPrefab = Resources.Load<GameObject>("Prefabs/finishedDirtyPlate3");
                     GrabItem();

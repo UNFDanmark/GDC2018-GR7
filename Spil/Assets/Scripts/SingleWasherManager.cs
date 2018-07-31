@@ -28,6 +28,7 @@ public class SingleWasherManager : MonoBehaviour
         if (amountOfPlates >= 3 && washerStarted == false)
         {
             StartWasher();
+            washerPaused = false;
         }
         
         if (washerEmptyMode == true && amountOfPlates <= 0)
