@@ -103,13 +103,11 @@ public class GameHandler : MonoBehaviour {
         {
             WinManagerScript.winnerRole = "Washer";
             SceneManager.LoadScene("WinScene");
-
         }
         else if (orderAmount == 0 && SceneManager.GetActiveScene().name != "WinScene")
         {
             WinManagerScript.winnerRole = "Cook";
             SceneManager.LoadScene("WinScene");
-
         }
     }
 
