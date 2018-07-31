@@ -89,7 +89,7 @@ InputManager:
     m_Name: p2A
     descriptiveName: 
     descriptiveNegativeName: 
-    negativeButton: 
+    negativeButton: 0
     positiveButton: right ctrl
     altNegativeButton: 
     altPositiveButton: 

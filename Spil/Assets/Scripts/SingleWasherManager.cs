@@ -43,7 +43,7 @@ public class SingleWasherManager : MonoBehaviour
             {
                 if (!playingSound)
                 {
-                    AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().washerSound, true, true);
+                    AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().washerSound, 0.2f, 1, true, true);
                     playingSound = true;
                 }
                 washerTimer -= Time.deltaTime;

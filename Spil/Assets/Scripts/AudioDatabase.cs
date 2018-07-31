@@ -6,14 +6,11 @@ public class AudioDatabase : MonoBehaviour {
 
     public AudioClip washerSound;
     public AudioClip stoveSound;
+    public AudioClip cuttingSound;
+    public AudioClip handWash;
+    public AudioClip stewSound;
+    public AudioClip pickupSound;
+    public AudioClip plateDown;
+    public AudioClip foodDown;
 
-    public void WasherSound()
-    {
-        AudioPlayer.playSound(washerSound, true, true);
-    }
-
-    public void StoveSound()
-    {
-        AudioPlayer.playSound(stoveSound, true, true);
-    }
 }

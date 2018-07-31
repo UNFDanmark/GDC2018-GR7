@@ -17,11 +17,11 @@ public class GameHandler : MonoBehaviour {
 
     public AudioClip baggrundsLyd;
 
-    public void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-        AudioPlayer.playSound(baggrundsLyd, false, true);
-    }
+
+    private static GameHandler instance;
+
+
+
     public enum ItemState
     {
 
@@ -77,17 +77,39 @@ public class GameHandler : MonoBehaviour {
     }
 
 
+    public void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        AudioPlayer.playSound(baggrundsLyd, false, true);
+    }
+
+    public void ResetObj()
+    {
+        potTableFoodNeeded = 3;
+        orderAmount = 1;
+        TableItemSpawner.spawnedDirtyPlates = 0;
+        TableItemSpawner.spawnedFoodPlates = 0;
+}
+
+
     public void Update()
     {
         if (dirtyPlateCounter == 0 && SceneManager.GetActiveScene().name != "WinScene")
         {
             WinManagerScript.winnerRole = "Washer";
             SceneManager.LoadScene("WinScene");
+
         }
         else if (orderAmount == 0 && SceneManager.GetActiveScene().name != "WinScene")
         {
             WinManagerScript.winnerRole = "Cook";
             SceneManager.LoadScene("WinScene");
+
         }
     }
 
