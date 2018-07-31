@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class SingleStoveManager : MonoBehaviour {
     public GameHandler.Item itemInStove = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
+    public GameObject audioDatabase;
     public float stoveTimer = 15f;
     public float burnedTimer = 10f;
     public bool stoveDone = false;
     public TextMesh timerText;
-    public bool stovePaused = false;
+    public bool stovePaused;
+    public bool playingSound = false;
 
     void Start()
     {
         timerText = GetComponentInChildren<TextMesh>();
+        stovePaused = true;
     }
 
     // Update is called once per frame
@@ -24,10 +27,17 @@ public class SingleStoveManager : MonoBehaviour {
         {
             if (stovePaused == false)
             {
+                /*if (!playingSound)
+                {
+                    AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().stoveSound, true, true);
+                    playingSound = true;
+                }*/
                 stoveTimer -= Time.deltaTime;
             }
             if (stoveTimer <= 0)
             {
+                GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().washerSound.name));
+                playingSound = false;
                 // Done
                 itemInStove.itemState = GameHandler.ItemState.done;
                 stoveDone = true;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class SingleWasherManager : MonoBehaviour
 {
     public GameHandler.Item itemInWasher = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
+    public GameObject audioDatabase;
     public int amountOfPlates;
     public int setWasherTime;
     private float washerTimer = 20f;
@@ -12,6 +13,7 @@ public class SingleWasherManager : MonoBehaviour
     public bool washerDone = false;
     public bool washerEmptyMode = false;
     public bool washerPaused;
+    public bool playingSound = false;
     public TextMesh timerText;
 
     public void Start()
@@ -39,15 +41,22 @@ public class SingleWasherManager : MonoBehaviour
         {
             if(washerPaused == false)
             {
+                if (!playingSound)
+                {
+                    AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().washerSound, true, true);
+                    playingSound = true;
+                }
                 washerTimer -= Time.deltaTime;
             }
 
             if (washerTimer <= 0)
             {
+                GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().washerSound.name));
                 itemInWasher.itemState = GameHandler.ItemState.clean;
                 washerStarted = false;
                 washerEmptyMode = true;
                 washerPaused = false;
+                playingSound = false;
             }
         }
         else
