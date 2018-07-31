@@ -11,11 +11,13 @@ public class SingleWasherManager : MonoBehaviour
     public bool washerStarted = false;
     public bool washerDone = false;
     public bool washerEmptyMode = false;
+    public bool washerPaused;
     public TextMesh timerText;
 
     public void Start()
     {
         timerText = GetComponentInChildren<TextMesh>();
+        washerPaused = true;
     }
 
     // Update is called once per frame
@@ -35,12 +37,17 @@ public class SingleWasherManager : MonoBehaviour
 
         if (washerStarted)
         {
-            washerTimer -= Time.deltaTime;
+            if(washerPaused == false)
+            {
+                washerTimer -= Time.deltaTime;
+            }
+
             if (washerTimer <= 0)
             {
                 itemInWasher.itemState = GameHandler.ItemState.clean;
                 washerStarted = false;
                 washerEmptyMode = true;
+                washerPaused = false;
             }
         }
         else
@@ -70,5 +77,6 @@ public class SingleWasherManager : MonoBehaviour
     public void StartWasher()
     {
         washerStarted = true;
+        
     }
 }

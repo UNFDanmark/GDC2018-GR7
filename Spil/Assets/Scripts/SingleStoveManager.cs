@@ -8,7 +8,7 @@ public class SingleStoveManager : MonoBehaviour {
     public float burnedTimer = 10f;
     public bool stoveDone = false;
     public TextMesh timerText;
-    public bool paused = false;
+    public bool stovePaused = false;
 
     void Start()
     {
@@ -22,7 +22,7 @@ public class SingleStoveManager : MonoBehaviour {
 
         if (itemInStove.possibleItems != GameHandler.PossibleItems.empty)
         {
-            if (paused == false)
+            if (stovePaused == false)
             {
                 stoveTimer -= Time.deltaTime;
             }
@@ -43,6 +43,7 @@ public class SingleStoveManager : MonoBehaviour {
             stoveTimer = 15f;
             burnedTimer = 10f;
             stoveDone = false;
+            stovePaused = true;
         }
 
         if (stoveTimer > 0 && itemInStove.possibleItems != GameHandler.PossibleItems.empty)

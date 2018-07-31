@@ -130,6 +130,21 @@ public class PlayerManager : MonoBehaviour {
 
                     }
                 }
+                else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty && CurrentStand.GetComponent<SingleStoveManager>().stoveDone == false)
+                {
+                    Debug.Log(CurrentStand.GetComponent<SingleStoveManager>().stovePaused);
+
+                    switch (CurrentStand.GetComponent<SingleStoveManager>().stovePaused)
+                    {
+                        case true:
+                            CurrentStand.GetComponent<SingleStoveManager>().stovePaused = false;
+                            break;
+                        case false:
+                            CurrentStand.GetComponent<SingleStoveManager>().stovePaused = true;
+                            break;
+                    }
+                }
+
                 else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty && CurrentStand.GetComponent<SingleStoveManager>().itemInStove.possibleItems == GameHandler.PossibleItems.foodPlate && CurrentStand.GetComponent<SingleStoveManager>().stoveDone)
                 {
                     //Tag noget fra stove 
@@ -140,7 +155,6 @@ public class PlayerManager : MonoBehaviour {
                     itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
                     GrabItem();
                 }
-
             }
             else if (CurrentStand.tag == "Washer")
             {
@@ -166,7 +180,19 @@ public class PlayerManager : MonoBehaviour {
                         if (CurrentStand.GetComponent<SingleWasherManager>().itemInWasher.possibleItems != GameHandler.PossibleItems.empty)
                         {
                             CurrentStand.GetComponent<SingleWasherManager>().StartWasher();
+                            Debug.Log(CurrentStand.GetComponent<SingleWasherManager>().washerPaused);
+
+                            switch (CurrentStand.GetComponent<SingleWasherManager>().washerPaused)
+                            {
+                                case true:
+                                    CurrentStand.GetComponent<SingleWasherManager>().washerPaused = false;
+                                    break;
+                                case false:
+                                    CurrentStand.GetComponent<SingleWasherManager>().washerPaused = true;
+                                    break;
+                            }
                         }
+                        
                     }
 
                     //Tag tallerken fra maskine
@@ -292,7 +318,6 @@ public class PlayerManager : MonoBehaviour {
 
         if(CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate)
         {
-            Debug.Log("her");
             CurrentItem.prefabDir = GameHandler.ItemPrefabDir.lessDirtyPlate;
             GameObject.Destroy(holdingItem);
             itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());

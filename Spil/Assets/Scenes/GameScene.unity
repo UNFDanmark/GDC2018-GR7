@@ -1524,7 +1524,7 @@ MonoBehaviour:
   winManager: {fileID: 1467994785260492, guid: aef7618bd2cff3f4dad813b78dbb58dc, type: 2}
   potTableFoodNeeded: 3
   dirtyPlateCounter: 0
-  orderAmount: 3
+  orderAmount: 1
   baggrundsLyd: {fileID: 8300000, guid: d4ab8431c4cc8b94782d57b91ca02409, type: 3}
 --- !u!4 &386338579
 Transform:
@@ -1841,6 +1841,7 @@ MonoBehaviour:
   washerStarted: 0
   washerDone: 0
   washerEmptyMode: 0
+  washerPaused: 0
   timerText: {fileID: 0}
 --- !u!1 &505390608
 GameObject:
@@ -6676,7 +6677,7 @@ MonoBehaviour:
   burnedTimer: 5
   stoveDone: 0
   timerText: {fileID: 0}
-  paused: 0
+  stovePaused: 0
 --- !u!1 &1799288312
 GameObject:
   m_ObjectHideFlags: 0
