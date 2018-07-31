@@ -8,7 +8,7 @@ public class SingleTableManager : MonoBehaviour {
     public GameObject dirtyPlate;
     public GameObject currentitem;
     public bool emptyTable = true;
-    public GameHandler.Item objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none);
+    public GameHandler.Item objectOnTable = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
     
 
 
@@ -52,7 +52,8 @@ public class SingleTableManager : MonoBehaviour {
 
             Vector3 offset = new Vector3(0, 0, 0);
             offset.y = 1;
-            currentitem = Instantiate(foodPlate, transform.position + offset, Quaternion.identity, transform);
+            GameObject itemPrefab = Resources.Load<GameObject>("Prefabs/" + objectOnTable.prefabDir.ToString());
+            currentitem = Instantiate(itemPrefab, transform.position + offset, Quaternion.identity, transform);
             emptyTable = false;
 
         }
@@ -61,10 +62,12 @@ public class SingleTableManager : MonoBehaviour {
 
             Vector3 offset = new Vector3(0, 0, 0);
             offset.y = 1;
-            currentitem = Instantiate(dirtyPlate, transform.position + offset, Quaternion.identity, transform);
+            GameObject itemPrefab = Resources.Load<GameObject>("Prefabs/" + objectOnTable.prefabDir.ToString());
+            currentitem = Instantiate(itemPrefab, transform.position + offset, Quaternion.identity, transform);
             emptyTable = false;
 
         }
+
         else if (objectOnTable.possibleItems == GameHandler.PossibleItems.empty)
         {
 
