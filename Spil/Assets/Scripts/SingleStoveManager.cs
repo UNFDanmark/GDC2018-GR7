@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class SingleStoveManager : MonoBehaviour {
     public GameHandler.Item itemInStove = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
-    public float stoveTimer = 5f;
-    public float burnedTimer = 5f;
+    public GameObject audioDatabase;
+    public float stoveTimer = 15f;
+    public float burnedTimer = 10f;
     public bool stoveDone = false;
     public TextMesh timerText;
+    public bool stovePaused;
+    public bool playingSound = false;
 
     void Start()
     {
         timerText = GetComponentInChildren<TextMesh>();
+        stovePaused = true;
     }
 
     // Update is called once per frame
@@ -21,9 +25,19 @@ public class SingleStoveManager : MonoBehaviour {
 
         if (itemInStove.possibleItems != GameHandler.PossibleItems.empty)
         {
-            stoveTimer -= Time.deltaTime;
+            if (stovePaused == false)
+            {
+                /*if (!playingSound)
+                {
+                    AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().stoveSound, true, true);
+                    playingSound = true;
+                }*/
+                stoveTimer -= Time.deltaTime;
+            }
             if (stoveTimer <= 0)
             {
+                GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().washerSound.name));
+                playingSound = false;
                 // Done
                 itemInStove.itemState = GameHandler.ItemState.done;
                 stoveDone = true;
@@ -36,9 +50,10 @@ public class SingleStoveManager : MonoBehaviour {
         }
         else
         {
-            stoveTimer = 5f;
-            burnedTimer = 5f;
+            stoveTimer = 15f;
+            burnedTimer = 10f;
             stoveDone = false;
+            stovePaused = true;
         }
 
         if (stoveTimer > 0 && itemInStove.possibleItems != GameHandler.PossibleItems.empty)

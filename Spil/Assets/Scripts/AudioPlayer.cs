@@ -52,6 +52,7 @@ public class AudioPlayer : MonoBehaviour
             Destroy(g, clip.length);
 
 
+        source.Play();
 
         return source;
 

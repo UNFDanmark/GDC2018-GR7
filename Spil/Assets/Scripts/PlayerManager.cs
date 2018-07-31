@@ -36,14 +36,16 @@ public class PlayerManager : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
+    
+        key.SetActive(onTile);
 
         if (currentOrder == null)
         {
             currentOrder = GameObject.FindGameObjectWithTag("Order");
         }
-
-        key.SetActive(onTile);
+        
         TileChecker();
         if (onTile)
         {
@@ -74,7 +76,6 @@ public class PlayerManager : MonoBehaviour {
                 //Player er på en tile
                 onTile = true;
                 CurrentStand = hit.collider.transform.parent.gameObject;
-
             }
             else
             {
@@ -129,6 +130,21 @@ public class PlayerManager : MonoBehaviour {
 
                     }
                 }
+                else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty && CurrentStand.GetComponent<SingleStoveManager>().stoveDone == false)
+                {
+                    Debug.Log(CurrentStand.GetComponent<SingleStoveManager>().stovePaused);
+
+                    switch (CurrentStand.GetComponent<SingleStoveManager>().stovePaused)
+                    {
+                        case true:
+                            CurrentStand.GetComponent<SingleStoveManager>().stovePaused = false;
+                            break;
+                        case false:
+                            CurrentStand.GetComponent<SingleStoveManager>().stovePaused = true;
+                            break;
+                    }
+                }
+
                 else if (CurrentItem.possibleItems == GameHandler.PossibleItems.empty && CurrentStand.GetComponent<SingleStoveManager>().itemInStove.possibleItems == GameHandler.PossibleItems.foodPlate && CurrentStand.GetComponent<SingleStoveManager>().stoveDone)
                 {
                     //Tag noget fra stove 
@@ -139,7 +155,6 @@ public class PlayerManager : MonoBehaviour {
                     itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
                     GrabItem();
                 }
-
             }
             else if (CurrentStand.tag == "Washer")
             {
@@ -165,7 +180,19 @@ public class PlayerManager : MonoBehaviour {
                         if (CurrentStand.GetComponent<SingleWasherManager>().itemInWasher.possibleItems != GameHandler.PossibleItems.empty)
                         {
                             CurrentStand.GetComponent<SingleWasherManager>().StartWasher();
+                            Debug.Log(CurrentStand.GetComponent<SingleWasherManager>().washerPaused);
+
+                            switch (CurrentStand.GetComponent<SingleWasherManager>().washerPaused)
+                            {
+                                case true:
+                                    CurrentStand.GetComponent<SingleWasherManager>().washerPaused = false;
+                                    break;
+                                case false:
+                                    CurrentStand.GetComponent<SingleWasherManager>().washerPaused = true;
+                                    break;
+                            }
                         }
+                        
                     }
 
                     //Tag tallerken fra maskine
@@ -237,7 +264,6 @@ public class PlayerManager : MonoBehaviour {
                     GameObject.Destroy(currentOrder);
                     gameHandlerObject.GetComponent<GameHandler>().dirtyPlateCounter++;
                     TableItemSpawner.spawnedFoodPlates = 0;
-                    gameHandlerObject.GetComponent<GameHandler>().foodPlateSpawnAmount++;
                     tableItemSpawner.GetComponent<TableItemSpawner>().SpawnFoodPlate();
 
                     GrabItem();
@@ -290,7 +316,13 @@ public class PlayerManager : MonoBehaviour {
         canMove = true;
         quickEventActive = false;
 
-        // Rimeligt hardcoded. Ændrer dette hvis at vi bruger quicktime til andre ting end at washe og cutte
+        if(CurrentItem.possibleItems == GameHandler.PossibleItems.dirtyPlate)
+        {
+            CurrentItem.prefabDir = GameHandler.ItemPrefabDir.lessDirtyPlate;
+            GameObject.Destroy(holdingItem);
+            itemPrefab = Resources.Load<GameObject>("Prefabs/" + CurrentItem.prefabDir.ToString());
+            GrabItem();
+        }
         CurrentItem.itemState = GameHandler.ItemState.prept;
 
     }

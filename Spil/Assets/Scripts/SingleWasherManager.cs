@@ -5,17 +5,21 @@ using UnityEngine;
 public class SingleWasherManager : MonoBehaviour
 {
     public GameHandler.Item itemInWasher = new GameHandler.Item(GameHandler.PossibleItems.empty, GameHandler.ItemState.none, GameHandler.ItemPrefabDir.none);
+    public GameObject audioDatabase;
     public int amountOfPlates;
     public int setWasherTime;
-    private float washerTimer = 5f;
+    private float washerTimer = 20f;
     public bool washerStarted = false;
     public bool washerDone = false;
     public bool washerEmptyMode = false;
+    public bool washerPaused;
+    public bool playingSound = false;
     public TextMesh timerText;
 
     public void Start()
     {
         timerText = GetComponentInChildren<TextMesh>();
+        washerPaused = true;
     }
 
     // Update is called once per frame
@@ -35,12 +39,24 @@ public class SingleWasherManager : MonoBehaviour
 
         if (washerStarted)
         {
-            washerTimer -= Time.deltaTime;
+            if(washerPaused == false)
+            {
+                if (!playingSound)
+                {
+                    AudioPlayer.playSound(audioDatabase.GetComponent<AudioDatabase>().washerSound, true, true);
+                    playingSound = true;
+                }
+                washerTimer -= Time.deltaTime;
+            }
+
             if (washerTimer <= 0)
             {
+                GameObject.Destroy(GameObject.Find("AudioPlayer " + audioDatabase.GetComponent<AudioDatabase>().washerSound.name));
                 itemInWasher.itemState = GameHandler.ItemState.clean;
                 washerStarted = false;
                 washerEmptyMode = true;
+                washerPaused = false;
+                playingSound = false;
             }
         }
         else
@@ -62,7 +78,7 @@ public class SingleWasherManager : MonoBehaviour
         }
         else if (washerTimer > 0 && itemInWasher.possibleItems != GameHandler.PossibleItems.empty && !washerEmptyMode)
         {
-            timerText.text = "Ready to start washer";
+            timerText.text = "Press to start";
         }
 
     }
@@ -70,5 +86,6 @@ public class SingleWasherManager : MonoBehaviour
     public void StartWasher()
     {
         washerStarted = true;
+        
     }
 }

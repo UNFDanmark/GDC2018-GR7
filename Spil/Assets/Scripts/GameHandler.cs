@@ -13,11 +13,14 @@ public class GameHandler : MonoBehaviour {
     public Item emptyItem = new Item(PossibleItems.empty, ItemState.none, ItemPrefabDir.none);
     public int potTableFoodNeeded = 3;
     public int dirtyPlateCounter;
-    public int orderAmount = 3;
+    public int orderAmount = 1;
+
+    public AudioClip baggrundsLyd;
 
     public void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        AudioPlayer.playSound(baggrundsLyd, false, true);
     }
     public enum ItemState
     {
@@ -47,9 +50,14 @@ public class GameHandler : MonoBehaviour {
     public enum ItemPrefabDir
     {
         none,
-        foodPlate,
+        Beef,
+        Salami,
+        Broccoli,
+        Carrot,
         dirtyPlate,
+        lessDirtyPlate,
         Pot
+        // Add other food prefabs
 
     }
 
@@ -67,6 +75,7 @@ public class GameHandler : MonoBehaviour {
             prefabDir = dirOfModelPrefab;
         }
     }
+
 
     public void Update()
     {
