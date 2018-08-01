@@ -42,7 +42,8 @@ public class WinManagerScript : MonoBehaviour {
     {
         if(Input.anyKeyDown)
         {
-            SceneManager.LoadScene("GameScene");
+            GameObject.Destroy(GameObject.Find("GameManager"));
+            SceneManager.LoadScene("main");
         }
     }
 }

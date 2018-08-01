@@ -15,7 +15,6 @@ public class StartMenuBehavior : MonoBehaviour {
 
 
     public RectTransform play, credit, exit;
-    public TextMeshProUGUI title;
     public UIEffects effects;
 
 
@@ -30,7 +29,6 @@ public class StartMenuBehavior : MonoBehaviour {
 
     public void Start()
     {
-        StartCoroutine(effects.TextFade(title,standardColor, 0.3f));
         StartCoroutine(effects.MoveRect(play, new Vector3(-161,-133, 0), MOVETIME-0.2f));
         StartCoroutine(effects.MoveRect(credit, new Vector3(161, -133, 0), MOVETIME));
         StartCoroutine(effects.MoveRect(exit, new Vector3(0, -221, 0), MOVETIME+0.2f));
@@ -68,7 +66,7 @@ public class StartMenuBehavior : MonoBehaviour {
     {
         StartCoroutine(effects.ImageFade(fader, Color.clear, 2f));
         creditTab.SetActive(true);
-        creditText.localPosition = new Vector3(0, 0, 0);
+        creditText.localPosition = new Vector3(0, -100, 0);
     }
 
     private void Update()

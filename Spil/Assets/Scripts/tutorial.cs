@@ -18,12 +18,17 @@ public class tutorial : MonoBehaviour {
     private int index = -1; //NextTut will make it 0.
 
     Coroutine p1, p2;
+
+
+    GameObject c_pp1, c_pp2;
     
     [System.Serializable]
     public struct TutorialInfo
     {
         public string player1Desc, player2Desc;
+        public GameObject pp1, pp2;
         public float time;
+
     }
 
 
@@ -74,8 +79,22 @@ public class tutorial : MonoBehaviour {
                 StopCoroutine(p2);
             }
 
+            if (c_pp1 != null)
+                c_pp1.SetActive(false);
+            if (c_pp2 != null)
+                c_pp2.SetActive(false);
+
+
+            info[index].pp1.SetActive(true);
+            info[index].pp2.SetActive(true);
+
+            c_pp1 = info[index].pp1;
+            c_pp2 = info[index].pp2;
+
             p1 = StartCoroutine(effects.SmoothTextAdd(player1, info[index].player1Desc, info[index].time));
             p2 = StartCoroutine(effects.SmoothTextAdd(player2, info[index].player2Desc, info[index].time));
+
+
         }
 
     }

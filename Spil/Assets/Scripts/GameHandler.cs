@@ -56,7 +56,10 @@ public class GameHandler : MonoBehaviour {
         Carrot,
         dirtyPlate,
         lessDirtyPlate,
-        Pot
+        Pot,
+        finishedDirtyPlate1,
+        finishedDirtyPlate2,
+        finishedDirtyPlate3
         // Add other food prefabs
 
     }
@@ -103,13 +106,11 @@ public class GameHandler : MonoBehaviour {
         {
             WinManagerScript.winnerRole = "Washer";
             SceneManager.LoadScene("WinScene");
-
         }
         else if (orderAmount == 0 && SceneManager.GetActiveScene().name != "WinScene")
         {
             WinManagerScript.winnerRole = "Cook";
             SceneManager.LoadScene("WinScene");
-
         }
     }
 

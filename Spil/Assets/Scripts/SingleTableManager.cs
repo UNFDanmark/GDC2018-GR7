@@ -67,6 +67,26 @@ public class SingleTableManager : MonoBehaviour {
             emptyTable = false;
 
         }
+        else if (objectOnTable.possibleItems == GameHandler.PossibleItems.finished && emptyTable)
+        {
+
+            Vector3 offset = new Vector3(0, 0, 0);
+            offset.y = 0.6f;
+            GameObject itemPrefab = Resources.Load<GameObject>("Prefabs/" + objectOnTable.prefabDir.ToString());
+            currentitem = Instantiate(itemPrefab, transform.position + offset, Quaternion.identity, transform);
+            emptyTable = false;
+
+        }
+        else if (objectOnTable.possibleItems == GameHandler.PossibleItems.finishedDirtyPlate && emptyTable)
+        {
+            Debug.Log(objectOnTable.prefabDir);
+            Vector3 offset = new Vector3(0, 0, 0);
+            offset.y = 0.6f;
+            GameObject itemPrefab = Resources.Load<GameObject>("Prefabs/" + objectOnTable.prefabDir.ToString());
+            currentitem = Instantiate(itemPrefab, transform.position + offset, Quaternion.identity, transform);
+            emptyTable = false;
+
+        }
 
         else if (objectOnTable.possibleItems == GameHandler.PossibleItems.empty)
         {
