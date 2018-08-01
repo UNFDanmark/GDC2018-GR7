@@ -1,0 +1,4 @@
+Underpaid er et fast paced lokalt multiplayer spil, som finder sted i et køkken.
+Spilleren styrer endten en kok eller en opvasker, som hver især har en opgave at få færdiggjort i køkkenet.
+Opvakseren skal have rengjort de snavsede tallerkner, og kokken skal have lavet en gryderet.
+Spilleren der er hurtigst færdig for først fri, og vinder dermed spillet.
